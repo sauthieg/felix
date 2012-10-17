@@ -16,7 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.felix.ipojo.manipulation.annotations;
+
+package org.apache.felix.ipojo.manipulator.metadata.annotation.visitor;
 
 import org.apache.felix.ipojo.metadata.Attribute;
 import org.apache.felix.ipojo.metadata.Element;
@@ -27,7 +28,7 @@ import org.objectweb.asm.commons.EmptyVisitor;
  * Parses a Property or ServiceProperty annotation.
  * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
-class PropertyAnnotationParser extends EmptyVisitor implements AnnotationVisitor {
+public class FieldPropertyVisitor extends EmptyVisitor implements AnnotationVisitor {
 
     /**
      * Parent element element.
@@ -61,46 +62,44 @@ class PropertyAnnotationParser extends EmptyVisitor implements AnnotationVisitor
 
 
     /**
+     * Constructor without field
+     * @param parent : element element..
+     */
+    public FieldPropertyVisitor(Element parent) {
+        this(null, parent);
+    }
+
+    /**
      * Constructor.
-     * @param parent : parent element.
+     * @param parent : element element.
      * @param field : field name.
      */
-    PropertyAnnotationParser(String field, Element parent) {
+    public FieldPropertyVisitor(String field, Element parent) {
         m_parent = parent;
         m_field = field;
     }
 
     /**
-     * Constructor without field
-     * @param parent : parent element..
-     */
-    PropertyAnnotationParser(Element parent) {
-        m_parent = parent;
-        m_field = null;
-    }
-
-    /**
      * Visit one "simple" annotation.
-     * @param arg0 : annotation name
-     * @param arg1 : annotation value
-     * @see org.objectweb.asm.AnnotationVisitor#visit(java.lang.String, java.lang.Object)
+     * @param name : annotation name
+     * @param value : annotation value
+     * @see org.objectweb.asm.AnnotationVisitor#visit(String, Object)
      */
-    public void visit(String arg0, Object arg1) {
-        if (arg0.equals("name")) {
-            m_name = arg1.toString();
+    public void visit(String name, Object value) {
+        if (name.equals("name")) {
+            m_name = value.toString();
             return;
         }
-        if (arg0.equals("value")) {
-            m_value = arg1.toString();
+        if (name.equals("value")) {
+            m_value = value.toString();
             return;
         }
-        if (arg0.equals("mandatory")) {
-            m_mandatory = arg1.toString();
+        if (name.equals("mandatory")) {
+            m_mandatory = value.toString();
             return;
         }
-        if (arg0.equals("type")) {
-        	m_type = arg1.toString();
-        	return;
+        if (name.equals("type")) {
+        	m_type = value.toString();
         }
     }
 
@@ -115,7 +114,7 @@ class PropertyAnnotationParser extends EmptyVisitor implements AnnotationVisitor
         }
 
 
-        Element[] props = m_parent.getElements("Property");
+        Element[] props = m_parent.getElements("property");
         Element prop = null;
         for (int i = 0; prop == null && props != null && i < props.length; i++) {
             String name = props[i].getAttribute("name");
