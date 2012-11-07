@@ -26,11 +26,8 @@ import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.commons.EmptyVisitor;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 10/11/12
- * Time: 11:31 PM
- * To change this template use File | Settings | File Templates.
+ * @see org.apache.felix.ipojo.annotations.PostRegistration
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public class PostRegistrationVisitor extends EmptyVisitor implements AnnotationVisitor {
 

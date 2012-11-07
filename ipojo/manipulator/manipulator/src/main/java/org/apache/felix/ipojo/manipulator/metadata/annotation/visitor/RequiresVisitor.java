@@ -27,7 +27,9 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.EmptyVisitor;
 
 /**
- * AnnotationVisitor parsing the @requires annotation.
+ * AnnotationVisitor parsing the @Requires annotation.
+ * @see org.apache.felix.ipojo.annotations.Requires
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public class RequiresVisitor extends EmptyVisitor implements AnnotationVisitor {
 

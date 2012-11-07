@@ -24,7 +24,8 @@ import org.apache.felix.ipojo.metadata.Attribute;
 import org.apache.felix.ipojo.metadata.Element;
 
 /**
- * Parse @bind & @unbind annotations.
+ * Parse @Bind & @Unbind annotations on method's parameters.
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public class ParameterBindVisitor extends AbstractBindVisitor {
 

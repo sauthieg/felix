@@ -28,11 +28,7 @@ import org.objectweb.asm.tree.MethodNode;
 import java.lang.annotation.ElementType;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 10/12/12
- * Time: 10:33 AM
- * To change this template use File | Settings | File Templates.
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public class ParameterGenericVisitor extends RootGenericVisitor {
     private int index;

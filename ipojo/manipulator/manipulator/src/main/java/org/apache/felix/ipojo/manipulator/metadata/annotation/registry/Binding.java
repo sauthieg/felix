@@ -25,12 +25,9 @@ import org.apache.felix.ipojo.manipulator.spi.Predicate;
 import java.lang.annotation.Annotation;
 
 /**
-* Created with IntelliJ IDEA.
-* User: guillaume
-* Date: 10/10/12
-* Time: 2:49 PM
-* To change this template use File | Settings | File Templates.
-*/
+ * Triple storing the source annotation, the associated factory and the predicate for conditional support.
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
+ */
 public class Binding {
     private Class<? extends Annotation> annotationType;
     private AnnotationVisitorFactory factory;

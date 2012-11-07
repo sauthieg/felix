@@ -20,12 +20,20 @@
 package org.apache.felix.ipojo.manipulator.spi;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 10/10/12
- * Time: 10:53 AM
- * To change this template use File | Settings | File Templates.
+ * A Predicate is executed with a given {@link BindingContext} and returns {@literal true} if the
+ * {@link #matches(BindingContext)} operation is a success. It returns {@literal false} otherwise.
+ * Predicates can be used to determine if the traversed element (can be found on {@link BindingContext})
+ * matches some properties.
+ *
+ * @see org.apache.felix.ipojo.manipulator.spi.helper.Predicates
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public interface Predicate {
+
+    /**
+     * Returns {@literal true} if the context is matching the predicate.
+     * @param context Binding information source
+     * @return {@literal true} if the context is matching the predicate, {@literal false} otherwise.
+     */
     boolean matches(BindingContext context);
 }

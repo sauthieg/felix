@@ -29,11 +29,7 @@ import org.objectweb.asm.commons.EmptyVisitor;
 import java.lang.reflect.Array;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 10/12/12
- * Time: 10:15 AM
- * To change this template use File | Settings | File Templates.
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public class GenericVisitor extends EmptyVisitor implements AnnotationVisitor {
     protected Element element;

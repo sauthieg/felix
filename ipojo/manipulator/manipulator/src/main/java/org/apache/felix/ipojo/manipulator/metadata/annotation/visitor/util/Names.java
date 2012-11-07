@@ -22,13 +22,10 @@ package org.apache.felix.ipojo.manipulator.metadata.annotation.visitor.util;
 import org.apache.felix.ipojo.manipulation.MethodCreator;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 10/10/12
- * Time: 4:34 PM
- * To change this template use File | Settings | File Templates.
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public class Names {
+
     /**
      * Computes the real method name. This method is useful when the annotation is collected on an manipulated method
      * (prefixed by <code>__M_</code>). This method just removes the prefix if found.
@@ -44,7 +41,14 @@ public class Names {
         }
     }
 
-    public static String getMethodIdentifier(String method) {
+    /**
+     * Extract an identifier from the given method name.
+     * It removes some pre-defined prefixes ({@literal bind}, {@literal unbind},
+     * {@literal set}, {@literal unset}, {@literal modified}).
+     * @param method method's name
+     * @return the method's identifier
+     */
+    public static String getMethodIdentifier(final String method) {
 
         String effectiveName = computeEffectiveMethodName(method);
 
@@ -75,8 +79,8 @@ public class Names {
     /**
      * Check if the given annotation descriptor is an iPOJO custom annotation.
      * A valid iPOJO custom annotation must contains 'ipojo' or 'handler' in its qualified name.
-     * @param desc : annotation descriptor
-     * @return : true if the given descriptor is an iPOJO custom annotation
+     * @param desc annotation descriptor
+     * @return {@literal true} if the given descriptor is an iPOJO custom annotation
      */
     public static boolean isCustomAnnotation(final String desc) {
         String lowerCase = desc.toLowerCase();

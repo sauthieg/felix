@@ -27,7 +27,8 @@ import org.apache.felix.ipojo.metadata.Element;
 import static org.apache.felix.ipojo.manipulator.metadata.annotation.visitor.util.Names.computeEffectiveMethodName;
 
 /**
- * Parse @bind & @unbind annotations.
+ * Parse @Bind & @Unbind annotations on methods.
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public class MethodBindVisitor extends AbstractBindVisitor {
 

@@ -26,6 +26,9 @@ import org.objectweb.asm.commons.EmptyVisitor;
 
 import static org.apache.felix.ipojo.manipulator.metadata.annotation.visitor.util.Names.computeEffectiveMethodName;
 
+/**
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
+ */
 public class MethodPropertyVisitor extends EmptyVisitor implements AnnotationVisitor {
 
     /**

@@ -37,6 +37,8 @@ import java.io.InputStream;
 
 /**
  * Parse the @HandlerDeclaration annotation.
+ * @see org.apache.felix.ipojo.annotations.HandlerDeclaration
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public class HandlerDeclarationVisitor extends EmptyVisitor implements AnnotationVisitor {
 

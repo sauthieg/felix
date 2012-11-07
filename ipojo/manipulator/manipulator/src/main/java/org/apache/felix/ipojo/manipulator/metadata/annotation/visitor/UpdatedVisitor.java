@@ -27,11 +27,8 @@ import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.commons.EmptyVisitor;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 10/11/12
- * Time: 2:57 PM
- * To change this template use File | Settings | File Templates.
+ * @see org.apache.felix.ipojo.annotations.Updated
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public class UpdatedVisitor extends EmptyVisitor implements AnnotationVisitor {
 

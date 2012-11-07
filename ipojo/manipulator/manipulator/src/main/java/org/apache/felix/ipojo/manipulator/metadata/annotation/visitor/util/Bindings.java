@@ -47,11 +47,7 @@ import static org.apache.felix.ipojo.manipulator.spi.helper.Predicates.on;
 import static org.apache.felix.ipojo.manipulator.spi.helper.Predicates.pattern;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 17/10/12
- * Time: 10:55
- * To change this template use File | Settings | File Templates.
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public class Bindings {
 

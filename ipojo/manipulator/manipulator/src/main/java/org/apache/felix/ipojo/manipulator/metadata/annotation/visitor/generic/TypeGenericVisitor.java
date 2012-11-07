@@ -25,11 +25,7 @@ import org.apache.felix.ipojo.metadata.Element;
 import java.lang.annotation.ElementType;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 10/12/12
- * Time: 2:49 PM
- * To change this template use File | Settings | File Templates.
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public class TypeGenericVisitor extends RootGenericVisitor {
     public TypeGenericVisitor(ComponentWorkbench workbench, Element element) {

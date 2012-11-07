@@ -27,14 +27,16 @@ import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.commons.EmptyVisitor;
 
 /**
- * Parse the @component annotation.
+ * Parse the @Component annotation.
+ * @see org.apache.felix.ipojo.annotations.Component
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public class ComponentVisitor extends EmptyVisitor implements AnnotationVisitor {
 
     private Reporter reporter;
 
     /**
-     * Element properties.
+     * Element 'properties'.
      */
     private Element m_props = new Element("properties", "");
 
@@ -48,9 +50,9 @@ public class ComponentVisitor extends EmptyVisitor implements AnnotationVisitor 
     }
 
     /**
-     * Visit @component annotation attribute.
-     * @param name : attribute name
-     * @param value : attribute value
+     * Visit @Component annotation attribute.
+     * @param name attribute name
+     * @param value attribute value
      * @see org.objectweb.asm.commons.EmptyVisitor#visit(java.lang.String, java.lang.Object)
      */
     public void visit(String name, Object value) {

@@ -30,15 +30,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 10/10/12
- * Time: 3:08 PM
- * To change this template use File | Settings | File Templates.
+ * Stores all the {@link Binding}s coming from the {@link org.apache.felix.ipojo.manipulator.spi.Module}.
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public class BindingRegistry {
     private Map<String, List<Binding>> tree;
     private Reporter reporter;
+
     /**
      * When no other Binding is selected, the default Bindings list is used.
      */
@@ -50,6 +48,9 @@ public class BindingRegistry {
         defaultBindings = new ArrayList<Binding>();
     }
 
+    /**
+     * Stores the given Bindings
+     */
     public void addBindings(Iterable<Binding> bindings) {
         for (Binding binding : bindings) {
             Type type = Type.getType(binding.getAnnotationType());
@@ -65,6 +66,9 @@ public class BindingRegistry {
         }
     }
 
+    /**
+     * Initiate a {@link Selection} for the given workbench.
+     */
     public Selection selection(ComponentWorkbench workbench) {
         return new Selection(this, workbench, reporter);
     }

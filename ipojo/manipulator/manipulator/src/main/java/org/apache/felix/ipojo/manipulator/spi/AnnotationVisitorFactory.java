@@ -19,19 +19,16 @@
 
 package org.apache.felix.ipojo.manipulator.spi;
 
-import org.apache.felix.ipojo.manipulator.Reporter;
-import org.apache.felix.ipojo.manipulator.metadata.annotation.ComponentWorkbench;
-import org.apache.felix.ipojo.metadata.Element;
 import org.objectweb.asm.AnnotationVisitor;
-import org.objectweb.asm.tree.MemberNode;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 08/10/12
- * Time: 13:39
- * To change this template use File | Settings | File Templates.
+ * Produces a new {@link AnnotationVisitor} instance for the given {@link BindingContext}.
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public interface AnnotationVisitorFactory {
+
+    /**
+     * May return {@literal null} if no visitor can be created.
+     */
     AnnotationVisitor newAnnotationVisitor(BindingContext context);
 }

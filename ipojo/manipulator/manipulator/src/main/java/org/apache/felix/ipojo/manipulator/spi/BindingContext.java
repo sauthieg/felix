@@ -26,7 +26,14 @@ import org.objectweb.asm.tree.MemberNode;
 
 import java.lang.annotation.ElementType;
 
+/**
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
+ */
 public class BindingContext {
+
+    /**
+     *
+     */
     private ComponentWorkbench workbench;
     private MemberNode node;
     private ElementType elementType;
@@ -34,7 +41,12 @@ public class BindingContext {
     private Reporter reporter;
     private Type annotationType;
 
-    public BindingContext(ComponentWorkbench workbench, Reporter reporter, Type annotationType, MemberNode node, ElementType elementType, int parameterIndex) {
+    public BindingContext(final ComponentWorkbench workbench,
+                          final Reporter reporter,
+                          final Type annotationType,
+                          final MemberNode node,
+                          final ElementType elementType,
+                          final int parameterIndex) {
         this.workbench = workbench;
         this.reporter = reporter;
         this.annotationType = annotationType;

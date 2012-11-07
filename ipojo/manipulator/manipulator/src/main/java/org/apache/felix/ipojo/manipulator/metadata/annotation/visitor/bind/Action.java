@@ -20,12 +20,8 @@
 package org.apache.felix.ipojo.manipulator.metadata.annotation.visitor.bind;
 
 /**
-* Created with IntelliJ IDEA.
-* User: guillaume
-* Date: 10/11/12
-* Time: 11:12 PM
-* To change this template use File | Settings | File Templates.
-*/
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
+ */
 public enum Action {
     BIND, MODIFIED, UNBIND
 }

@@ -31,11 +31,7 @@ import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 08/10/12
- * Time: 14:28
- * To change this template use File | Settings | File Templates.
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public class ClassMetadataCollector extends EmptyVisitor {
 
@@ -45,7 +41,7 @@ public class ClassMetadataCollector extends EmptyVisitor {
     private BindingRegistry registry;
 
     /**
-     * Output informations.
+     * Output information.
      */
     private Reporter reporter;
 

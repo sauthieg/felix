@@ -26,11 +26,7 @@ import org.objectweb.asm.commons.EmptyVisitor;
 import org.objectweb.asm.tree.FieldNode;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 10/9/12
- * Time: 11:52 AM
- * To change this template use File | Settings | File Templates.
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public class FieldMetadataCollector extends EmptyVisitor implements FieldVisitor {
 

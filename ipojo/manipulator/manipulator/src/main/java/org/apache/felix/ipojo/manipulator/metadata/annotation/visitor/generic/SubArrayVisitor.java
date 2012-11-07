@@ -27,12 +27,8 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.EmptyVisitor;
 
 /**
-* Created with IntelliJ IDEA.
-* User: guillaume
-* Date: 10/12/12
-* Time: 9:29 AM
-* To change this template use File | Settings | File Templates.
-*/
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
+ */
 public class SubArrayVisitor extends EmptyVisitor implements AnnotationVisitor {
 
     /**

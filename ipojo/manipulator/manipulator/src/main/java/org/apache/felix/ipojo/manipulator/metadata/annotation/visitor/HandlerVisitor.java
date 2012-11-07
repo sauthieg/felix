@@ -28,6 +28,8 @@ import org.objectweb.asm.commons.EmptyVisitor;
 
 /**
  * Parses the @Handler annotation.
+ * @see org.apache.felix.ipojo.annotations.Handler
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public class HandlerVisitor extends EmptyVisitor implements AnnotationVisitor {
 

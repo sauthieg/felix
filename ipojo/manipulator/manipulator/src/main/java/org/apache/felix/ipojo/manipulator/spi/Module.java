@@ -22,12 +22,15 @@ package org.apache.felix.ipojo.manipulator.spi;
 import org.apache.felix.ipojo.manipulator.metadata.annotation.registry.Binding;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 15/10/12
- * Time: 17:00
- * To change this template use File | Settings | File Templates.
+ * A Module is the contributions from third party to the iPOJO manipulation process.
+ * It is dedicated to Annotation binding support (executing a given ASM AnnotationVisitor
+ * when a particular annotation is found).
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public interface Module extends Iterable<Binding> {
+
+    /**
+     * Configure the bindings provided by this module.
+     */
     void configure();
 }

@@ -26,11 +26,10 @@ import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.commons.EmptyVisitor;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 10/11/12
- * Time: 2:57 PM
- * To change this template use File | Settings | File Templates.
+ * Parse @Validate and @Invalidate annotations.
+ * @see org.apache.felix.ipojo.annotations.Validate
+ * @see org.apache.felix.ipojo.annotations.Invalidate
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public class LifecycleVisitor extends EmptyVisitor implements AnnotationVisitor {
 

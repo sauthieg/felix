@@ -74,13 +74,13 @@ import java.lang.annotation.ElementType;
 import static org.apache.felix.ipojo.manipulator.spi.helper.Predicates.on;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 10/9/12
- * Time: 4:12 PM
- * To change this template use File | Settings | File Templates.
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public class DefaultBindingModule extends AbsBindingModule {
+
+    /**
+     * Configure all the iPOJO's default annotation's bindings.
+     */
     public void configure() {
 
         // Class level annotations

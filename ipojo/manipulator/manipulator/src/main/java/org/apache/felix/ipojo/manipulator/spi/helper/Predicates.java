@@ -25,17 +25,17 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 
+import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Target;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.regex.Pattern;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 10/10/12
- * Time: 11:13 AM
- * To change this template use File | Settings | File Templates.
+ * Ready-to-use {@link Predicate} implementations.
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public class Predicates {
     public static Node node() {
@@ -50,6 +50,10 @@ public class Predicates {
         return new Matcher(regex);
     }
 
+    /**
+     * Restrict to the given {@link ElementType}.
+     * @param type expected {@link ElementType}
+     */
     public static Predicate on(final ElementType type) {
         return new Predicate() {
             public boolean matches(BindingContext context) {
@@ -58,6 +62,9 @@ public class Predicates {
         };
     }
 
+    /**
+     * Always return {@literal true}.
+     */
     public static Predicate alwaysTrue() {
         return new Predicate() {
             public boolean matches(BindingContext context) {
@@ -66,6 +73,10 @@ public class Predicates {
         };
     }
 
+    /**
+     * Successful if all given predicates are satisfied.
+     * @param predicates predicates to be satisfied
+     */
     public static Predicate and(final Predicate... predicates) {
 
         // Optimization
@@ -87,6 +98,10 @@ public class Predicates {
         };
     }
 
+    /**
+     * Successful if at least one of the given predicates is satisfied.
+     * @param predicates predicates to be satisfied (at least one)
+     */
     public static Predicate or(final Collection<Predicate> predicates) {
 
         // Optimization
@@ -109,8 +124,30 @@ public class Predicates {
         };
     }
 
+    /**
+     * Successful if at least one of the given predicates is satisfied.
+     * @param predicates predicates to be satisfied (at least one)
+     */
     public static Predicate or(final Predicate... predicates) {
         return or(Arrays.asList(predicates));
+    }
+
+    /**
+     * Restrict to the supported {@link ElementType}(s) of the annotation (use the @Target, if provided).
+     * @param annotationType annotation to explore
+     */
+    public static Predicate onlySupportedElements(final Class<? extends Annotation> annotationType) {
+        Target target = annotationType.getAnnotation(Target.class);
+        if (target == null) {
+            return alwaysTrue();
+        }
+
+        Collection<Predicate> supportedTypes = new HashSet<Predicate>();
+        for (ElementType type : target.value()) {
+            supportedTypes.add(on(type));
+        }
+
+        return or(supportedTypes);
     }
 
     public static class Reference {
@@ -121,6 +158,10 @@ public class Predicates {
             this.refId = refId;
         }
 
+        /**
+         * Restrict execution if the {@link org.apache.felix.ipojo.manipulator.metadata.annotation.ComponentWorkbench}
+         * contains the given reference's name.
+         */
         public Predicate exists() {
             return new Predicate() {
                 public boolean matches(BindingContext context) {
@@ -138,6 +179,9 @@ public class Predicates {
             pattern = Pattern.compile(regex);
         }
 
+        /**
+         * Restrict execution if the annotation's classname matches the given pattern.
+         */
         public Predicate matches() {
             return new Predicate() {
                 public boolean matches(BindingContext context) {
@@ -148,6 +192,9 @@ public class Predicates {
     }
 
     public static class Node {
+        /**
+         * Restrict execution if the supported {@literal Node} has the given name.
+         */
         public Predicate named(final String expected) {
             return new Predicate() {
                 public boolean matches(BindingContext context) {

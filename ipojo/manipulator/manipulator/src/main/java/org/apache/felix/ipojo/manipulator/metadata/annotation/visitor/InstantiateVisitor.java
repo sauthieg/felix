@@ -27,6 +27,8 @@ import org.objectweb.asm.commons.EmptyVisitor;
 
 /**
  * Parse the @Instantitate annotation.
+ * @see org.apache.felix.ipojo.annotations.Instantiate
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public class InstantiateVisitor extends EmptyVisitor implements AnnotationVisitor {
 

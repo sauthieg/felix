@@ -21,15 +21,7 @@ package org.apache.felix.ipojo.manipulator.metadata.annotation.registry;
 
 import org.apache.felix.ipojo.manipulator.Reporter;
 import org.apache.felix.ipojo.manipulator.metadata.annotation.ComponentWorkbench;
-import org.apache.felix.ipojo.manipulator.metadata.annotation.visitor.generic.FieldGenericVisitor;
-import org.apache.felix.ipojo.manipulator.metadata.annotation.visitor.generic.MethodGenericVisitor;
-import org.apache.felix.ipojo.manipulator.metadata.annotation.visitor.generic.ParameterGenericVisitor;
-import org.apache.felix.ipojo.manipulator.metadata.annotation.visitor.generic.TypeGenericVisitor;
-import org.apache.felix.ipojo.manipulator.metadata.annotation.visitor.util.Elements;
-import org.apache.felix.ipojo.manipulator.metadata.annotation.visitor.util.Names;
 import org.apache.felix.ipojo.manipulator.spi.BindingContext;
-import org.apache.felix.ipojo.manipulator.spi.Predicate;
-import org.apache.felix.ipojo.metadata.Element;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
@@ -39,17 +31,13 @@ import org.objectweb.asm.tree.MethodNode;
 
 import java.lang.annotation.ElementType;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 10/10/12
- * Time: 9:37 AM
- * To change this template use File | Settings | File Templates.
+ * A {@link Selection} is used to select a subset of all supported {@link AnnotationVisitor}.
+ * It's a query DSL.
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public class Selection implements Iterable<AnnotationVisitor> {
 
@@ -60,7 +48,6 @@ public class Selection implements Iterable<AnnotationVisitor> {
     private int index = -1;
     private String annotation;
     private ElementType elementType = null;
-
 
     public Selection(BindingRegistry registry, ComponentWorkbench workbench, Reporter reporter) {
         this.registry = registry;

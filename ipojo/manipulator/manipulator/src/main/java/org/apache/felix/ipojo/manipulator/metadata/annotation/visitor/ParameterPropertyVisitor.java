@@ -25,6 +25,9 @@ import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.MethodNode;
 
+/**
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
+ */
 public class ParameterPropertyVisitor extends MethodPropertyVisitor implements AnnotationVisitor {
 
     /**

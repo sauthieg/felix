@@ -27,11 +27,7 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.EmptyVisitor;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 10/11/12
- * Time: 5:02 PM
- * To change this template use File | Settings | File Templates.
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public abstract class AbstractBindVisitor extends EmptyVisitor implements AnnotationVisitor {
 

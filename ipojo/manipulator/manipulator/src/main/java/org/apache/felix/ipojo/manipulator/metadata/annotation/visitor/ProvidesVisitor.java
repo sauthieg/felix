@@ -27,7 +27,9 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.EmptyVisitor;
 
 /**
- * Parse the @provides annotation.
+ * Parse the @Provides annotation.
+ * @see org.apache.felix.ipojo.annotations.Provides
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public class ProvidesVisitor extends EmptyVisitor implements AnnotationVisitor {
 

@@ -24,17 +24,17 @@ import org.apache.felix.ipojo.metadata.Element;
 import org.objectweb.asm.Type;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 10/12/12
- * Time: 9:31 AM
- * To change this template use File | Settings | File Templates.
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public class Elements {
+
     /**
-     * Build the element object from the given descriptor.
-     * @param type : annotation descriptor
-     * @return : the element
+     * Build the {@link Element} object from the given descriptor.
+     * It splits the annotation's classname in 2 parts (up to the last '.')
+     * first part (package's name) becomes the Element's namespace, and second
+     * part (class simple name) becomes the Element's name.
+     * @param type annotation descriptor
+     * @return the new element
      */
     public static Element buildElement(Type type) {
         String name = type.getClassName();
@@ -44,6 +44,11 @@ public class Elements {
         return new Element(local, namespace);
     }
 
+    /**
+     * Return the Element named {@literal properties}, creates one if missing.
+     * @param workbench source for search
+     * @return the {@literal properties} Element (never null).
+     */
     public static Element getPropertiesElement(ComponentWorkbench workbench) {
         Element properties = workbench.getIds().get("properties");
         if (properties == null) {

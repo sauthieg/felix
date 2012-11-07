@@ -26,6 +26,8 @@ import org.objectweb.asm.commons.EmptyVisitor;
 
 /**
  * Parses a Property or ServiceProperty annotation.
+ * @see org.apache.felix.ipojo.annotations.ServiceProperty
+ * @see org.apache.felix.ipojo.annotations.Property
  * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public class FieldPropertyVisitor extends EmptyVisitor implements AnnotationVisitor {

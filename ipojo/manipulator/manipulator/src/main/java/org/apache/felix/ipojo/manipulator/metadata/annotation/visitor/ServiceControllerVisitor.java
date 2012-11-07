@@ -26,7 +26,9 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.EmptyVisitor;
 
 /**
- * Parses a ServiceController annotation.
+ * Parses a @ServiceController annotation.
+ * @see org.apache.felix.ipojo.annotations.ServiceController
+ * @author <a href="mailto:dev@felix.apache.org">Felix Project Team</a>
  */
 public class ServiceControllerVisitor extends EmptyVisitor implements AnnotationVisitor {
 
