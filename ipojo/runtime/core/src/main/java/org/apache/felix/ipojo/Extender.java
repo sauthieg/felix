@@ -34,7 +34,9 @@ import org.apache.felix.ipojo.metadata.Element;
 import org.apache.felix.ipojo.parser.ManifestMetadataParser;
 import org.apache.felix.ipojo.parser.ParseException;
 import org.apache.felix.ipojo.parser.ParseUtils;
+import org.apache.felix.ipojo.transformation.ElementTransformer;
 import org.apache.felix.ipojo.util.Logger;
+import org.apache.felix.ipojo.util.Tracker;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -133,6 +135,11 @@ public class Extender implements SynchronousBundleListener, BundleActivator {
      * The processor analyzing arriving bundles and creating iPOJO contributions.
      */
     private final CreatorThread m_processor = new CreatorThread();
+
+    /**
+     * {@link ElementTransformer} tracker.
+     */
+    private Tracker tracker;
 
     /**
      * Bundle Listener Notification.
@@ -327,6 +334,10 @@ public class Extender implements SynchronousBundleListener, BundleActivator {
             EventDispatcher.create(context);
         }
 
+        // Open a Tracker on ElementTransformer services
+        tracker = new Tracker(context, ElementTransformer.class.getName(), null);
+        tracker.open();
+
         // Begin by initializing core handlers
         startManagementFor(m_bundle);
 
@@ -377,6 +388,8 @@ public class Extender implements SynchronousBundleListener, BundleActivator {
                 }
             }
         }
+
+       tracker.close();
 
         m_factoryTypes = null;
         m_creator = null;
@@ -490,6 +503,15 @@ public class Extender implements SynchronousBundleListener, BundleActivator {
             m_logger.log(Logger.WARNING, "Type of component not available: " + typeName);
             m_unboundTypes.add(new UnboundComponentType(typeName, metadata, bundle));
             return;
+        }
+
+        // Transform the Element representing the component's type
+        Object[] transformers = tracker.getServices();
+        if ((transformers != null) && (transformers.length != 0)) {
+            for (int i = 0; i < transformers.length; i++) {
+                ElementTransformer transformer = (ElementTransformer) transformers[i];
+                transformer.transform(metadata);
+            }
         }
 
         // Once found, we invoke the AbstractFactory constructor to create the component factory.

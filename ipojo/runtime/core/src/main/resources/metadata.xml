@@ -54,4 +54,10 @@
         <callback transition="invalidate" method="stop"/>
     </component>
     <instance component="org.apache.felix.ipojo.IPOJOURLHandler"/>
+
+    <!-- Auto attached handler transformer -->
+    <component classname="org.apache.felix.ipojo.transformation.internal.AutoAttachedHandlerTransformer">
+        <provides />
+    </component>
+    <instance component="org.apache.felix.ipojo.transformation.internal.AutoAttachedHandlerTransformer" />
 </ipojo>

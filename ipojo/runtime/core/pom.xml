@@ -136,6 +136,7 @@
                             org.apache.felix.ipojo.handlers.architecture,
                             org.apache.felix.ipojo.handlers.lifecycle.callback,
                             org.apache.felix.ipojo.handlers.lifecycle.controller,
+                            org.apache.felix.ipojo.transformation.internal,
                             META-INF.services.*,
                             <!-- ASM (Manipulator dependencies) -->
                             org.objectweb.asm.commons,
@@ -153,6 +154,7 @@
                             org.apache.felix.ipojo.handlers.providedservice.*; version="${ipojo.package.version}",
                             org.apache.felix.ipojo.handlers.configuration; version="${ipojo.package.version}",
                             org.apache.felix.ipojo.context; version="${ipojo.package.version}",
+                            org.apache.felix.ipojo.transformation; version="${ipojo.package.version}",
                             <!-- Embedded manipulator -->
                             org.apache.felix.ipojo.manipulator; version="${ipojo.manipulator.version}",
                             org.apache.felix.ipojo.xml.parser; version="${ipojo.manipulator.version}",
