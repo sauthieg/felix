@@ -19,11 +19,11 @@
 
 package org.apache.felix.ipojo.bnd;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import aQute.libg.reporter.Reporter;
 import org.apache.felix.ipojo.manipulator.reporter.EmptyReporter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A {@code BndReporter} knows how to wrap a Bnd Reporter into an iPOJO Reporter.

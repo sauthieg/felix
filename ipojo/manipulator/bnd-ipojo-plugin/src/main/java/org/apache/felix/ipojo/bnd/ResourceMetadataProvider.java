@@ -18,16 +18,16 @@
  */
 package org.apache.felix.ipojo.bnd;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
 import aQute.lib.osgi.Resource;
 import org.apache.felix.ipojo.manipulator.MetadataProvider;
 import org.apache.felix.ipojo.manipulator.Reporter;
 import org.apache.felix.ipojo.manipulator.metadata.StreamMetadataProvider;
 import org.apache.felix.ipojo.metadata.Element;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A {@code ResourceMetadataProvider} is ...

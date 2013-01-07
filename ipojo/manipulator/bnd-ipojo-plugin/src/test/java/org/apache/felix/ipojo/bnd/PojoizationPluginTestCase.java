@@ -18,26 +18,21 @@
  */
 package org.apache.felix.ipojo.bnd;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import aQute.lib.osgi.Analyzer;
 import aQute.lib.osgi.Jar;
 import aQute.lib.osgi.Resource;
 import aQute.lib.osgi.URLResource;
 import aQute.libg.reporter.Reporter;
 import junit.framework.TestCase;
-import org.easymock.EasyMock;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
 
 public class PojoizationPluginTestCase extends TestCase {
 
