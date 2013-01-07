@@ -26,6 +26,6 @@ package org.apache.felix.ipojo.bnd;
 * Time: 11:31
 * To change this template use File | Settings | File Templates.
 */
-public class TestComponent {
+public class EmptyComponent {
 
 }

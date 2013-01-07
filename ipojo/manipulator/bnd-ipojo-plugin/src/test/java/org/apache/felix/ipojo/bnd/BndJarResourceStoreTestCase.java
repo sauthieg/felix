@@ -133,14 +133,14 @@ public class BndJarResourceStoreTestCase extends TestCase {
         PojoizationPlugin plugin = new PojoizationPlugin();
 
         Map<String, String> props = new HashMap<String, String>();
-        String path = TestComponent.class.getName().replace('.', '/').concat(".class");
+        String path = EmptyComponent.class.getName().replace('.', '/').concat(".class");
 
         Resource resource2 = new URLResource(getClass().getResource("/metadata-test-component.xml"));
         doReturn(dot).when(analyzer).getJar();
         doReturn(resource2).when(dot).getResource(eq("META-INF/metadata.xml"));
 
         Collection<Clazz> classes = new ArrayList<Clazz>();
-        Resource typeResource = new URLResource(getClass().getResource("TestComponent.class"));
+        Resource typeResource = new URLResource(getClass().getResource("EmptyComponent.class"));
         Clazz clazz = new Clazz(path, typeResource);
         clazz.parseClassFile();
         classes.add(clazz);
@@ -158,7 +158,7 @@ public class BndJarResourceStoreTestCase extends TestCase {
 
         plugin.analyzeJar(analyzer);
 
-        assertContains("component { $classname=\"org.apache.felix.ipojo.bnd.TestComponent\" manipulation { method { $name=\"$init\" }}}",
+        assertContains("component { $classname=\"org.apache.felix.ipojo.bnd.EmptyComponent\" manipulation { method { $name=\"$init\" }}}",
                 analyzer.getProperty("IPOJO-Components"));
         verify(dot).putResource(eq(path), any(Resource.class));
     }

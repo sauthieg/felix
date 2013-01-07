@@ -18,5 +18,5 @@
   -->
 
 <ipojo>
-  <component classname="org.apache.felix.ipojo.bnd.TestComponent"/>
+  <component classname="org.apache.felix.ipojo.bnd.EmptyComponent"/>
 </ipojo>
