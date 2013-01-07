@@ -60,8 +60,8 @@ public class ResourceMetadataProvider implements MetadataProvider {
             try {
                 stream = m_resource.openInputStream();
             } catch (Exception e) {
-                m_reporter.error(e.getMessage());
-                throw new IOException("Cannot read metadata");
+                m_reporter.error("%s", e.getMessage());
+                throw new IOException("Cannot read metadata", e);
             }
             StreamMetadataProvider provider = new StreamMetadataProvider(stream, m_reporter);
             provider.setValidateUsingLocalSchemas(m_validateUsingLocalSchemas);

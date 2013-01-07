@@ -50,15 +50,15 @@ public class PojoizationPlugin implements Plugin, AnalyzerPlugin {
 
     private static final String PROPERTY_METADATA = "metadata";
     private static final String PROPERTY_USE_LOCAL_SCHEMAS = "use-local-schemas";
-    private static final String PROPERTY_EXCLUDE_EMBED_BUNDLES = "exclude-embed-bundles";
+    private static final String PROPERTY_INCLUDE_EMBED_BUNDLES = "include-embed-bundles";
 
     private static final String DEFAULT_METADATA = "META-INF/metadata.xml";
     private static final boolean DEFAULT_USE_LOCAL_SCHEMAS = false;
-    private static final boolean DEFAULT_EXCLUDE_EMBED_BUNDLES = false;
+    private static final boolean DEFAULT_INCLUDE_EMBED_BUNDLES = false;
 
     private String m_metadata = DEFAULT_METADATA;
     private boolean m_useLocalSchemas = DEFAULT_USE_LOCAL_SCHEMAS;
-    private boolean m_excludeEmbedBundles = DEFAULT_EXCLUDE_EMBED_BUNDLES;
+    private boolean m_includeEmbedBundles = DEFAULT_INCLUDE_EMBED_BUNDLES;
 
     private Reporter m_reporter;
 
@@ -75,8 +75,8 @@ public class PojoizationPlugin implements Plugin, AnalyzerPlugin {
         }
 
         // Process embed bundles ?
-        if (configuration.containsKey(PROPERTY_EXCLUDE_EMBED_BUNDLES)) {
-            m_excludeEmbedBundles = true;
+        if (configuration.containsKey(PROPERTY_INCLUDE_EMBED_BUNDLES)) {
+            m_includeEmbedBundles = true;
         }
     }
 
@@ -93,7 +93,7 @@ public class PojoizationPlugin implements Plugin, AnalyzerPlugin {
 
         // Build ResourceStore
         BndJarResourceStore store = new BndJarResourceStore(analyzer, this.m_reporter);
-        store.setExcludeEmbedComponents(m_excludeEmbedBundles);
+        store.setIncludeEmbedComponents(m_includeEmbedBundles);
 
         // Build MetadataProvider
         CompositeMetadataProvider provider = new CompositeMetadataProvider(reporter);
@@ -116,7 +116,7 @@ public class PojoizationPlugin implements Plugin, AnalyzerPlugin {
         provider.addMetadataProvider(new AnnotationMetadataProvider(store, reporter));
 
         CacheableMetadataProvider cache = new CacheableMetadataProvider(provider);
-        if (cache.getMetadatas().isEmpty() && hasNoEmbedComponents(analyzer)) {
+        if (cache.getMetadatas().isEmpty() && !hasEmbedComponents(analyzer)) {
             return false;
         }
 
@@ -139,9 +139,9 @@ public class PojoizationPlugin implements Plugin, AnalyzerPlugin {
         return false;
     }
 
-    private boolean hasNoEmbedComponents(Analyzer analyzer) throws Exception {
-        // We don't want to process components from embed jars ?
-        return m_excludeEmbedBundles || !hasEmbedComponents(analyzer);
+    private boolean hasEmbedComponents(Analyzer analyzer) throws Exception {
+        // We want to process components from embed jars ?
+        return m_includeEmbedBundles && Manifests.hasEmbedComponents(analyzer);
 
     }
 

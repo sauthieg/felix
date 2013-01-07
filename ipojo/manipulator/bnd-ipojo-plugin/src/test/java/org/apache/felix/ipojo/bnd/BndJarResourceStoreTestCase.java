@@ -70,6 +70,7 @@ public class BndJarResourceStoreTestCase extends TestCase {
         PojoizationPlugin plugin = new PojoizationPlugin();
 
         Map<String, String> props = new HashMap<String, String>();
+        props.put("include-embed-bundles", "true");
 
         Resource resource = new URLResource(getClass().getResource("/EMBED-MANIFEST.MF"));
         doReturn(dot).when(analyzer).getJar();
@@ -89,7 +90,6 @@ public class BndJarResourceStoreTestCase extends TestCase {
         PojoizationPlugin plugin = new PojoizationPlugin();
 
         Map<String, String> props = new HashMap<String, String>();
-        props.put("exclude-embed-bundles", "true");
 
         Resource resource = new URLResource(getClass().getResource("/EMBED-MANIFEST.MF"));
         doReturn(dot).when(analyzer).getJar();
@@ -109,6 +109,7 @@ public class BndJarResourceStoreTestCase extends TestCase {
         PojoizationPlugin plugin = new PojoizationPlugin();
 
         Map<String, String> props = new HashMap<String, String>();
+        props.put("include-embed-bundles", "true");
 
         Resource resource = new URLResource(getClass().getResource("/EMBED-MANIFEST.MF"));
         Resource resource2 = new URLResource(getClass().getResource("/metadata-components-only.xml"));
@@ -133,6 +134,7 @@ public class BndJarResourceStoreTestCase extends TestCase {
         PojoizationPlugin plugin = new PojoizationPlugin();
 
         Map<String, String> props = new HashMap<String, String>();
+        props.put("include-embed-bundles", "true");
         String path = EmptyComponent.class.getName().replace('.', '/').concat(".class");
 
         Resource resource2 = new URLResource(getClass().getResource("/metadata-test-component.xml"));

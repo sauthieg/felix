@@ -53,7 +53,7 @@ public class BndJarResourceStore implements ResourceStore {
     private MetadataRenderer m_renderer = new MetadataRenderer();
 
     private List<Element> m_metadata;
-    private boolean m_excludeEmbedComponents;
+    private boolean m_includeEmbedComponents;
 
     public BndJarResourceStore(Analyzer analyzer, Reporter reporter) {
         m_metadata = new ArrayList<Element>();
@@ -110,7 +110,7 @@ public class BndJarResourceStore implements ResourceStore {
                 continue;
             }
 
-            if (!m_excludeEmbedComponents) {
+            if (m_includeEmbedComponents) {
                 // Otherwise ...
                 // Try to see if it is in an embed dependencies
                 Jar jar = findJar(clazz.getPath());
@@ -183,7 +183,7 @@ public class BndJarResourceStore implements ResourceStore {
         // Write the iPOJO header (including manipulation metadata)
         StringBuilder builder = new StringBuilder();
 
-        if (!m_excludeEmbedComponents) {
+        if (m_includeEmbedComponents) {
             // Incorporate metadata of embed dependencies (if any)
             for (Jar jar : m_analyzer.getClasspath()) {
                 try {
@@ -232,7 +232,7 @@ public class BndJarResourceStore implements ResourceStore {
 
     }
 
-    public void setExcludeEmbedComponents(boolean excludeEmbedComponents) {
-        m_excludeEmbedComponents = excludeEmbedComponents;
+    public void setIncludeEmbedComponents(boolean excludeEmbedComponents) {
+        m_includeEmbedComponents = excludeEmbedComponents;
     }
 }
