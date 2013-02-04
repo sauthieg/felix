@@ -83,11 +83,10 @@ public class DefaultInstanceDeclaration extends AbstractDeclaration implements I
         }
 
         String name = getInstanceName();
-        if (name != null) {
-            properties.put(InstanceDeclaration.INSTANCE_NAME, name);
-        } else {
-            properties.put(InstanceDeclaration.INSTANCE_NAME, UNNAMED_INSTANCE);
+        if (name == null) {
+            name = UNNAMED_INSTANCE;
         }
+        properties.put(InstanceDeclaration.INSTANCE_NAME, name);
 
         return properties;
     }
