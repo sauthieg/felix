@@ -57,13 +57,13 @@ public interface InstanceDeclaration extends Declaration {
     String getComponentName();
 
     /**
-     * @return the component type's version, <code>null</code> if not set.
+     * @return the component type's version, {@literal null} if not set.
      */
     String getComponentVersion();
 
     /**
      * Gets the instance name.
-     * @return the instance name, <code>unnamed</code> if not specified.
+     * @return the instance name, {@literal unnamed} if not specified.
      */
     String getInstanceName();
 }

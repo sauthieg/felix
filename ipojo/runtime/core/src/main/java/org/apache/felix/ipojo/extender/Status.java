@@ -28,7 +28,7 @@ package org.apache.felix.ipojo.extender;
 public interface Status {
     /**
      * Is the declaration fulfilled ?
-     * @return <code>true</code> if the declaration is bound, <code>false</code> otherwise.
+     * @return {@literal true} if the declaration is bound, {@literal false} otherwise.
      */
     boolean isBound();
 

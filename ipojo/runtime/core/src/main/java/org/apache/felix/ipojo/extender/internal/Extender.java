@@ -55,14 +55,14 @@ public class Extender implements BundleActivator, SynchronousBundleListener {
 
     /**
      * Property allowing to set if the internal dispatcher is enabled or disabled.
-     * Possible value are either <code>true</code> or <code>false</code>.
+     * Possible value are either {@literal true} or {@literal false}.
      */
     private static final String ENABLING_DISPATCHER = "ipojo.internal.dispatcher";
 
     /**
      * Property allowing to disable the asynchronous process (and so enables the
      * synchronous processing).
-     * Possible value are either <code>true</code> or <code>false</code>.
+     * Possible value are either {@literal true} or {@literal false}.
      */
     private static final String SYNCHRONOUS_PROCESSING = "ipojo.processing.synchronous";
 
@@ -184,10 +184,10 @@ public class Extender implements BundleActivator, SynchronousBundleListener {
      * Enables or disables the internal dispatcher, so sets the
      * {@link Extender#DISPATCHER_ENABLED} flag.
      * This method checks if the {@link Extender#ENABLING_DISPATCHER}
-     * property is set to <code>true</code>. Otherwise, the internal
+     * property is set to {@literal true}. Otherwise, the internal
      * dispatcher is disabled. The property can be set as a system
-     * property (<code>ipojo.internal.dispatcher</code>) or inside the
-     * iPOJO bundle manifest (<code>ipojo-internal-dispatcher</code>).
+     * property ({@literal ipojo.internal.dispatcher}) or inside the
+     * iPOJO bundle manifest ({@literal ipojo-internal-dispatcher}).
      * @param context the bundle context.
      * @param logger the logger to indicates if the internal dispatcher is set.
      */
@@ -222,9 +222,9 @@ public class Extender implements BundleActivator, SynchronousBundleListener {
      * thread to process bundles. So, iPOJO can be used on the
      * Google App Engine.
      * This method checks if the {@link Extender#SYNCHRONOUS_PROCESSING}
-     * property is set to <code>true</code>. Otherwise, asynchronous processing
+     * property is set to {@literal true}. Otherwise, asynchronous processing
      * is used (default). The property can be set as a system
-     * property (<code>ipojo.processing.synchronous</code>) or inside the
+     * property ({@literal ipojo.processing.synchronous}) or inside the
      * iPOJO bundle manifest.
      * @param context the bundle context.
      * @param logger the logger to indicates if the internal dispatcher is set.
