@@ -20,6 +20,7 @@
 package org.apache.felix.ipojo.extender.internal;
 
 import org.apache.felix.ipojo.EventDispatcher;
+import org.apache.felix.ipojo.extender.internal.linker.DeclarationLinker;
 import org.apache.felix.ipojo.extender.internal.processor.ChainedBundleProcessor;
 import org.apache.felix.ipojo.extender.internal.processor.ComponentsBundleProcessor;
 import org.apache.felix.ipojo.extender.internal.processor.ExtensionBundleProcessor;
@@ -101,6 +102,11 @@ public class Extender implements BundleActivator, SynchronousBundleListener {
 
     private ChainedBundleProcessor m_processor = new ChainedBundleProcessor();
 
+    /**
+     * Binds Instances to Factories to Extensions.
+     */
+    private DeclarationLinker m_linker;
+
     public void start(BundleContext context) throws Exception {
         m_context = context;
         m_bundle = context.getBundle();
@@ -114,6 +120,10 @@ public class Extender implements BundleActivator, SynchronousBundleListener {
         if (DISPATCHER_ENABLED) {
             EventDispatcher.create(context);
         }
+
+        // Start linking
+        m_linker = new DeclarationLinker(context);
+        m_linker.start();
 
         m_processor.getProcessors().add(new ExtensionBundleProcessor(m_logger));
         m_processor.getProcessors().add(new ComponentsBundleProcessor(m_logger));
@@ -150,6 +160,8 @@ public class Extender implements BundleActivator, SynchronousBundleListener {
         if (DISPATCHER_ENABLED) {
             EventDispatcher.dispose();
         }
+
+        m_linker.stop();
 
         m_logger.log(Logger.INFO, "iPOJO Main Extender stopped");
         m_context = null;

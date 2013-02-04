@@ -72,12 +72,6 @@ public class DefaultTypeDeclarationTestCase extends TestCase {
     @Mock
     private IPojoFactory factory;
 
-    @Captor
-    private ArgumentCaptor<ServiceListener> captor;
-
-    @Captor
-    private ArgumentCaptor<FactoryStateListener> fslCaptor;
-
     @Override
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -95,43 +89,6 @@ public class DefaultTypeDeclarationTestCase extends TestCase {
         // Verify service registration
         verify(m_bundleContext).registerService(TypeDeclaration.class.getName(), declaration, null);
 
-    }
-
-    public void testActivationDeactivation() throws Exception {
-        when(m_bundleContext.createFilter(anyString())).thenReturn(filter);
-        when(filter.match(extensionReference)).thenReturn(true);
-        when(m_bundleContext.getService(extensionReference)).thenReturn(m_extension);
-        when(m_extension.getFactoryBuilder()).thenReturn(m_builder);
-        when(m_builder.build(any(BundleContext.class), any(Element.class))).thenReturn(factory);
-
-        DefaultTypeDeclaration declaration = new DefaultTypeDeclaration(m_bundleContext, element("component", "component.Hello"));
-        declaration.start();
-
-        // Declaration is not bound
-        assertFalse(declaration.getStatus().isBound());
-
-        verify(m_bundleContext).addServiceListener(captor.capture(), anyString());
-
-        ServiceListener listener = captor.getValue();
-        ServiceEvent e = new ServiceEvent(ServiceEvent.REGISTERED, extensionReference);
-        listener.serviceChanged(e);
-
-        verify(factory).addFactoryStateListener(fslCaptor.capture());
-        FactoryStateListener fsl = fslCaptor.getValue();
-        fsl.stateChanged(factory, Factory.VALID);
-
-        assertTrue(declaration.getStatus().isBound());
-
-        // The 2nd tracker should have registered its own listener
-        verify(m_bundleContext, times(2)).addServiceListener(captor.capture(), anyString());
-        ServiceListener listener2 = captor.getValue();
-        assertNotSame(listener, listener2);
-
-        ServiceEvent e2 = new ServiceEvent(ServiceEvent.UNREGISTERING, extensionReference);
-        listener.serviceChanged(e2);
-
-        // After extension removal, the declaration should be unbound
-        assertFalse(declaration.getStatus().isBound());
     }
 
     private Element element(String type, String name) {

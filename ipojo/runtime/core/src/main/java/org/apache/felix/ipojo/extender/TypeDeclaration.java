@@ -19,10 +19,25 @@
 
 package org.apache.felix.ipojo.extender;
 
+import org.apache.felix.ipojo.metadata.Element;
+
 /**
  * Service exposed to instruct a factory creation.
  */
 public interface TypeDeclaration extends Declaration {
+
+    /**
+     * Get the component metadata description.
+     * @return the component metadata description.
+     */
+    Element getComponentMetadata();
+
+    /**
+     * Returns {@literal true} if the type is public
+     * @return {@literal true} if the type is public
+     */
+    boolean isPublic();
+
     /**
      * Gets the component type's name.
      * @return the component type's name.
