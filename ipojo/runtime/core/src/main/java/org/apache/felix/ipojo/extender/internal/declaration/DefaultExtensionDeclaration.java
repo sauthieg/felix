@@ -32,6 +32,10 @@ public class DefaultExtensionDeclaration extends AbstractDeclaration implements 
         return m_factoryBuilder;
     }
 
+    public String getKey() {
+        return m_type;
+    }
+
     public void start() {
         m_registration = m_bundleContext.registerService(ExtensionDeclaration.class.getName(), this, getServiceProperties());
         bind();

@@ -12,4 +12,5 @@ import org.apache.felix.ipojo.extender.builder.FactoryBuilder;
 public interface ExtensionDeclaration extends Declaration {
     String ID_PROPERTY = "extension.id";
     FactoryBuilder getFactoryBuilder();
+    String getKey();
 }
