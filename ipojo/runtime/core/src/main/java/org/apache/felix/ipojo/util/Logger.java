@@ -20,7 +20,7 @@ package org.apache.felix.ipojo.util;
 
 import org.apache.felix.ipojo.ComponentInstance;
 import org.apache.felix.ipojo.ErrorHandler;
-import org.apache.felix.ipojo.Extender;
+import org.apache.felix.ipojo.extender.internal.Extender;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.log.LogService;

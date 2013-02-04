@@ -30,6 +30,7 @@ import java.util.Set;
 
 import org.apache.felix.ipojo.architecture.ComponentTypeDescription;
 import org.apache.felix.ipojo.architecture.PropertyDescription;
+import org.apache.felix.ipojo.extender.internal.Extender;
 import org.apache.felix.ipojo.metadata.Element;
 import org.apache.felix.ipojo.util.Logger;
 import org.apache.felix.ipojo.util.SecurityHelper;
