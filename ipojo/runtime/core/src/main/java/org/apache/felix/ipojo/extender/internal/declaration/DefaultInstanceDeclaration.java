@@ -27,11 +27,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 30/01/13
- * Time: 17:44
- * To change this template use File | Settings | File Templates.
+ * Default implementation of the instance declaration.
  */
 public class DefaultInstanceDeclaration extends AbstractDeclaration implements InstanceDeclaration {
 
@@ -40,6 +36,7 @@ public class DefaultInstanceDeclaration extends AbstractDeclaration implements I
     private final BundleContext m_bundleContext;
     private final String m_componentName;
     private final Dictionary<String, Object> m_configuration;
+
     private ServiceRegistration<?> m_registration;
 
     public DefaultInstanceDeclaration(BundleContext bundleContext, String componentName) {
@@ -56,6 +53,22 @@ public class DefaultInstanceDeclaration extends AbstractDeclaration implements I
         return m_configuration;
     }
 
+    public String getComponentName() {
+        return m_componentName;
+    }
+
+    public String getComponentVersion() {
+        return (String) m_configuration.get("factory.version"); // TODO Extract factory.version as constant
+    }
+
+    public String getInstanceName() {
+        String name = (String) m_configuration.get("instance.name");   // TODO Extract instance.name as constant
+        if (name == null) {
+            return UNNAMED_INSTANCE;
+        }
+        return name;
+    }
+
     public void start() {
         m_registration = m_bundleContext.registerService(InstanceDeclaration.class.getName(), this, getServiceProperties());
     }
@@ -64,10 +77,18 @@ public class DefaultInstanceDeclaration extends AbstractDeclaration implements I
         Hashtable<String, Object> properties = new Hashtable<String, Object>();
         properties.put(InstanceDeclaration.COMPONENT_NAME_PROPERTY, m_componentName);
 
-        String version = (String) m_configuration.get("factory.version");
+        String version = getComponentVersion();
         if (version != null) {
             properties.put(InstanceDeclaration.COMPONENT_VERSION_PROPERTY, version);
         }
+
+        String name = getInstanceName();
+        if (name != null) {
+            properties.put(InstanceDeclaration.INSTANCE_NAME, name);
+        } else {
+            properties.put(InstanceDeclaration.INSTANCE_NAME, UNNAMED_INSTANCE);
+        }
+
         return properties;
     }
 

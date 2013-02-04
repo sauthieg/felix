@@ -20,14 +20,27 @@
 package org.apache.felix.ipojo.extender;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 31/01/13
- * Time: 14:02
- * To change this template use File | Settings | File Templates.
+ * The declaration status.
+ * A declaration may be fulfilled or not (bound or not).
+ * When the declaration is unbound, a message can be given to explain the reason.
+ * Implementation are immutable.
  */
 public interface Status {
+    /**
+     * Is the declaration fulfilled ?
+     * @return <code>true</code> if the declaration is bound, <code>false</code> otherwise.
+     */
     boolean isBound();
+
+    /**
+     * Gets the unbound message if any.
+     * @return the unbound message, <code>null</code> if no message.
+     */
     String getMessage();
+
+    /**
+     * Gets the unbound error if any.
+     * @return the unbound error, <code>null</code> if no error were set.
+     */
     Throwable getThrowable();
 }

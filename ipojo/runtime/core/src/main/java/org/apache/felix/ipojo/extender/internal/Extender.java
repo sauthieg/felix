@@ -105,7 +105,7 @@ public class Extender implements BundleActivator, SynchronousBundleListener {
         m_context = context;
         m_bundle = context.getBundle();
 
-        m_logger = new Logger(m_context, "IPOJO-Extender");
+        m_logger = new Logger(m_context, "IPOJO-Main-Extender");
 
         enablingDispatcher(context, m_logger);
         enablingSynchronousProcessing(context, m_logger);
@@ -124,6 +124,7 @@ public class Extender implements BundleActivator, SynchronousBundleListener {
         m_processor.activate(m_bundle);
 
         if (! SYNCHRONOUS_PROCESSING_ENABLED) {
+            //TODO makes processing asynchronous
             //new Thread(m_processor).start();
         }
 
@@ -138,7 +139,7 @@ public class Extender implements BundleActivator, SynchronousBundleListener {
             }
         }
 
-        m_logger.log(Logger.INFO, "iPOJO Runtime started");
+        m_logger.log(Logger.INFO, "iPOJO Main Extender started");
     }
 
     public void stop(BundleContext context) throws Exception {
@@ -150,7 +151,7 @@ public class Extender implements BundleActivator, SynchronousBundleListener {
             EventDispatcher.dispose();
         }
 
-        m_logger.log(Logger.INFO, "iPOJO Runtime stopped");
+        m_logger.log(Logger.INFO, "iPOJO Main Extender stopped");
         m_context = null;
     }
 
@@ -247,7 +248,7 @@ public class Extender implements BundleActivator, SynchronousBundleListener {
 
         // Either l is null, or the specified value was false
         Extender.SYNCHRONOUS_PROCESSING_ENABLED = false;
-        logger.log(Logger.INFO, "iPOJO synchrnous processing disables");
+        logger.log(Logger.INFO, "iPOJO synchronous processing disabled");
 
     }
 

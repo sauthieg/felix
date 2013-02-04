@@ -20,15 +20,36 @@
 package org.apache.felix.ipojo.extender;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 31/01/13
- * Time: 14:00
- * To change this template use File | Settings | File Templates.
+ * A declaration is a creation instruction of an entity (Component type, Factory, Instance...).
+ * All declarations are exposed as services. <em>Processors</em> are tracking the adequate declaration type and create
+ * the entity.
+ *
+ * Declaration can be <em>bound</em> or <em>unbound</em> whether they are fulfilled. When they are unbound,
+ * a message or/and an error can be set.
+ *
  */
 public interface Declaration {
+    /**
+     * Gets the declaration status.
+     * @return the current status. As Status are immutable, it returns a new object every time.
+     */
     Status getStatus();
+
+    /**
+     * Marks the declaration bound.
+     */
     void bind();
+
+    /**
+     * Unbinds the declaration.
+     * @param message an explanation
+     */
     void unbind(String message);
+
+    /**
+     * Unbinds the declaration
+     * @param message an explanation
+     * @param throwable an error
+     */
     void unbind(String message, Throwable throwable);
 }
