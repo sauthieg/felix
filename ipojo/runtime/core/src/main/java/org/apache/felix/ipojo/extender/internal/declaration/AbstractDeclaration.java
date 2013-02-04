@@ -23,11 +23,7 @@ import org.apache.felix.ipojo.extender.Declaration;
 import org.apache.felix.ipojo.extender.Status;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 31/01/13
- * Time: 11:53
- * To change this template use File | Settings | File Templates.
+ * Common code to all Declaration object.
  */
 public abstract class AbstractDeclaration implements Declaration, Status {
 
@@ -48,7 +44,24 @@ public abstract class AbstractDeclaration implements Declaration, Status {
     }
 
     public Status getStatus() {
-        return this;
+        // We return an immutable object, created on the fly.
+        return new Status() {
+            final boolean m_bound = AbstractDeclaration.this.m_bound;
+            final String m_message = AbstractDeclaration.this.m_message;
+            final Throwable m_throwable = AbstractDeclaration.this.m_throwable;
+
+            public boolean isBound() {
+                return this.m_bound;
+            }
+
+            public String getMessage() {
+                return this.m_message;
+            }
+
+            public Throwable getThrowable() {
+                return this.m_throwable;
+            }
+        };
     }
 
     public void bind() {

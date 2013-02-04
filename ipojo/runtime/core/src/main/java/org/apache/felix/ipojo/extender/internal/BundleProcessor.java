@@ -22,15 +22,29 @@ package org.apache.felix.ipojo.extender.internal;
 import org.osgi.framework.Bundle;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 31/01/13
- * Time: 16:27
- * To change this template use File | Settings | File Templates.
+ * Main Processor interface.
+ * A bundle processor is a fragment of extender, it analyze the bundle content and creates the entities.
  */
 public interface BundleProcessor {
+    /**
+     * A bundle is started.
+     * @param bundle the bundle
+     */
     void activate(Bundle bundle);
+
+    /**
+     * A bundle is stopping. This call is made during the stopping phase.
+     * @param bundle the bundle
+     */
     void deactivate(Bundle bundle);
+
+    /**
+     * The extender is started.
+     */
     void start();
+
+    /**
+     * The extender is stopped.
+     */
     void stop();
 }

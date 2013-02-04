@@ -41,16 +41,14 @@ import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 30/01/13
- * Time: 17:48
- * To change this template use File | Settings | File Templates.
+ * Default implementation of the component type declaration.
+ * TODO Should be declarative only, the linking should be done by another entity.
  */
 public class DefaultTypeDeclaration extends AbstractDeclaration implements TypeDeclaration, FactoryStateListener {
 
     private final BundleContext m_bundleContext;
     private final Element m_componentMetadata;
+
     private ServiceTracker m_extensionTracker;
     private ServiceTracker m_instanceTracker;
     private IPojoFactory m_factory;
@@ -77,7 +75,7 @@ public class DefaultTypeDeclaration extends AbstractDeclaration implements TypeD
         String filter = String.format(
                 "(&(objectclass=%s)(%s=%s))",
                 ExtensionDeclaration.class.getName(),
-                ExtensionDeclaration.ID_PROPERTY,
+                ExtensionDeclaration.EXTENSION_NAME_PROPERTY,
                 getQualifiedName()
         );
         m_extensionTracker = new ServiceTracker(m_bundleContext, m_bundleContext.createFilter(filter), new ExtensionSupport());
@@ -130,6 +128,10 @@ public class DefaultTypeDeclaration extends AbstractDeclaration implements TypeD
             }
         }
         return version;
+    }
+
+    public String getExtension() {
+        return null;  //TODO To implement.
     }
 
     private String getQualifiedName() {

@@ -261,7 +261,7 @@ public class Arch {
         PrintStream out = System.out;
         out.println("Available extensions:");
         for (ExtensionDeclaration extension : m_extensions) {
-            out.println("  * " + extension.getKey());
+            out.println("  * " + extension.getExtensionName());
         }
     }
 

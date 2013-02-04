@@ -9,11 +9,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
 /**
- * Created with IntelliJ IDEA.
- * User: guillaume
- * Date: 30/01/13
- * Time: 17:28
- * To change this template use File | Settings | File Templates.
+ * Default implementation of the iPOJO Extension Declaration.
  */
 public class DefaultExtensionDeclaration extends AbstractDeclaration implements ExtensionDeclaration {
 
@@ -32,7 +28,7 @@ public class DefaultExtensionDeclaration extends AbstractDeclaration implements 
         return m_factoryBuilder;
     }
 
-    public String getKey() {
+    public String getExtensionName() {
         return m_type;
     }
 
@@ -43,7 +39,7 @@ public class DefaultExtensionDeclaration extends AbstractDeclaration implements 
 
     private Dictionary<String, ?> getServiceProperties() {
         Hashtable<String, Object> properties = new Hashtable<String, Object>();
-        properties.put(ExtensionDeclaration.ID_PROPERTY, m_type);
+        properties.put(ExtensionDeclaration.EXTENSION_NAME_PROPERTY, m_type);
         return properties;
     }
 

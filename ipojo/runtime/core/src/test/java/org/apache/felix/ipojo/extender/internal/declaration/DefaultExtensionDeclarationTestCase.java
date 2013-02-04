@@ -64,7 +64,7 @@ public class DefaultExtensionDeclarationTestCase extends TestCase {
         // Verify service registration
         ArgumentCaptor<Hashtable> argument = ArgumentCaptor.forClass(Hashtable.class);
         verify(m_bundleContext).registerService(eq(ExtensionDeclaration.class.getName()), eq(declaration), argument.capture());
-        assertEquals(argument.getValue().get(ExtensionDeclaration.ID_PROPERTY), "component");
+        assertEquals(argument.getValue().get(ExtensionDeclaration.EXTENSION_NAME_PROPERTY), "component");
 
     }
 }
