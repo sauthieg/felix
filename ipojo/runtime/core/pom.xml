@@ -90,9 +90,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.0</version>
                 <configuration>
                     <target>jsr14</target>
                     <source>1.5</source>
+                    <testTarget>1.5</testTarget>
+                    <testSource>1.5</testSource>
                 </configuration>
             </plugin>
             <plugin>
