@@ -55,6 +55,7 @@ public class ExtensionBundleProcessorTestCase extends TestCase {
     @Mock
     private BundleContext m_bundleContext;
 
+    @Mock
     private Logger m_logger;
 
     @Mock
@@ -68,8 +69,6 @@ public class ExtensionBundleProcessorTestCase extends TestCase {
         when(m_bundle.getBundleContext()).thenReturn(m_bundleContext);
         when(m_bundleContext.getBundle()).thenReturn(m_bundle);
         when(m_bundle.getHeaders()).thenReturn(headers);
-
-        m_logger = new Logger(m_bundleContext, "test");
     }
 
     public void testEmptyExtensionBundle() throws Exception {

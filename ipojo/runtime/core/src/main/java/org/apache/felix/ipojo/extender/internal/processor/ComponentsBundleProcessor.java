@@ -34,6 +34,7 @@ import org.apache.felix.ipojo.extender.internal.declaration.DefaultTypeDeclarati
 import org.apache.felix.ipojo.metadata.Element;
 import org.apache.felix.ipojo.parser.ManifestMetadataParser;
 import org.apache.felix.ipojo.parser.ParseException;
+import org.apache.felix.ipojo.util.Log;
 import org.apache.felix.ipojo.util.Logger;
 import org.osgi.framework.Bundle;
 
@@ -45,10 +46,10 @@ import org.osgi.framework.Bundle;
  * To change this template use File | Settings | File Templates.
  */
 public class ComponentsBundleProcessor implements BundleProcessor {
-    private final Logger m_logger;
+    private final Log m_logger;
     private final Map<Bundle, ComponentsAndInstances> m_registry = new HashMap<Bundle, ComponentsAndInstances>();
 
-    public ComponentsBundleProcessor(Logger logger) {
+    public ComponentsBundleProcessor(Log logger) {
         m_logger = logger;
     }
 

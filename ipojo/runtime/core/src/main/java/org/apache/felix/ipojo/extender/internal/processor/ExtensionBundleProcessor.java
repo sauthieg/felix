@@ -32,6 +32,7 @@ import org.apache.felix.ipojo.extender.internal.builder.ReflectiveFactoryBuilder
 import org.apache.felix.ipojo.extender.internal.declaration.DefaultExtensionDeclaration;
 import org.apache.felix.ipojo.metadata.Element;
 import org.apache.felix.ipojo.parser.ParseUtils;
+import org.apache.felix.ipojo.util.Log;
 import org.apache.felix.ipojo.util.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -45,10 +46,10 @@ import org.osgi.framework.BundleContext;
  */
 public class ExtensionBundleProcessor implements BundleProcessor {
 
-    private final Logger m_logger;
+    private final Log m_logger;
     private Map<Bundle, List<DefaultExtensionDeclaration>> m_extensions = new HashMap<Bundle, List<DefaultExtensionDeclaration>>();
 
-    public ExtensionBundleProcessor(Logger logger) {
+    public ExtensionBundleProcessor(Log logger) {
         m_logger = logger;
     }
 
