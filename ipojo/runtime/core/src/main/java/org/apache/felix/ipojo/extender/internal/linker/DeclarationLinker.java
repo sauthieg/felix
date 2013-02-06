@@ -20,8 +20,8 @@
 package org.apache.felix.ipojo.extender.internal.linker;
 
 import org.apache.felix.ipojo.extender.TypeDeclaration;
+import org.apache.felix.ipojo.extender.queue.QueueService;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleReference;
 import org.osgi.framework.ServiceReference;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
@@ -35,10 +35,12 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
  */
 public class DeclarationLinker implements ServiceTrackerCustomizer {
     private final BundleContext m_bundleContext;
+    private final QueueService m_queueService;
     private final ServiceTracker m_typeTracker;
 
-    public DeclarationLinker(BundleContext bundleContext) {
+    public DeclarationLinker(BundleContext bundleContext, QueueService queueService) {
         m_bundleContext = bundleContext;
+        m_queueService = queueService;
         m_typeTracker = new ServiceTracker(m_bundleContext, TypeDeclaration.class.getName(), this);
    }
 
@@ -52,7 +54,7 @@ public class DeclarationLinker implements ServiceTrackerCustomizer {
 
     public Object addingService(ServiceReference reference) {
         TypeDeclaration declaration = (TypeDeclaration) m_bundleContext.getService(reference);
-        ManagedType managedType = new ManagedType(reference.getBundle().getBundleContext(), declaration);
+        ManagedType managedType = new ManagedType(reference.getBundle().getBundleContext(), m_queueService, declaration);
         managedType.start();
         return managedType;
     }

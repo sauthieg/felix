@@ -24,6 +24,12 @@ import org.apache.felix.ipojo.extender.internal.linker.DeclarationLinker;
 import org.apache.felix.ipojo.extender.internal.processor.ChainedBundleProcessor;
 import org.apache.felix.ipojo.extender.internal.processor.ComponentsBundleProcessor;
 import org.apache.felix.ipojo.extender.internal.processor.ExtensionBundleProcessor;
+import org.apache.felix.ipojo.extender.internal.queue.ExecutorQueueService;
+import org.apache.felix.ipojo.extender.internal.queue.PrefixedThreadFactory;
+import org.apache.felix.ipojo.extender.internal.queue.SynchronousQueueService;
+import org.apache.felix.ipojo.extender.internal.queue.pref.HeaderPreferenceSelection;
+import org.apache.felix.ipojo.extender.internal.queue.pref.PreferenceQueueService;
+import org.apache.felix.ipojo.extender.queue.QueueService;
 import org.apache.felix.ipojo.util.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
@@ -107,6 +113,8 @@ public class Extender implements BundleActivator, SynchronousBundleListener {
      */
     private DeclarationLinker m_linker;
 
+    private QueueService m_queueService;
+
     public void start(BundleContext context) throws Exception {
         m_context = context;
         m_bundle = context.getBundle();
@@ -121,8 +129,16 @@ public class Extender implements BundleActivator, SynchronousBundleListener {
             EventDispatcher.create(context);
         }
 
+        // TODO refactor this to make it more configurable
+        // TODO do not forget to stop theses services in BundleActivator.stop(BundleContext)
+        SynchronousQueueService sync = new SynchronousQueueService(context);
+        sync.start();
+        ExecutorQueueService async = new ExecutorQueueService(context, 3, new PrefixedThreadFactory("[iPOJO] "));
+        async.start();
+        m_queueService = new PreferenceQueueService(new HeaderPreferenceSelection(), sync, async);
+
         // Start linking
-        m_linker = new DeclarationLinker(context);
+        m_linker = new DeclarationLinker(context, m_queueService);
         m_linker.start();
 
         m_processor.getProcessors().add(new ExtensionBundleProcessor(m_logger));

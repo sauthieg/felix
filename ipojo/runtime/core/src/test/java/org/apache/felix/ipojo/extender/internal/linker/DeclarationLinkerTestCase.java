@@ -23,6 +23,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 import org.apache.felix.ipojo.extender.internal.declaration.DefaultTypeDeclaration;
+import org.apache.felix.ipojo.extender.queue.QueueService;
 import org.apache.felix.ipojo.metadata.Attribute;
 import org.apache.felix.ipojo.metadata.Element;
 import org.mockito.Mock;
@@ -53,6 +54,9 @@ public class DeclarationLinkerTestCase extends TestCase {
 
     @Mock
     private ServiceReference m_reference;
+
+    @Mock
+    private QueueService m_queueService;
 
 /*
     @Mock
@@ -88,7 +92,7 @@ public class DeclarationLinkerTestCase extends TestCase {
         when(m_reference.getBundle()).thenReturn(m_bundle);
         when(m_bundle.getBundleContext()).thenReturn(m_bundleContext);
 
-        DeclarationLinker linker = new DeclarationLinker(m_bundleContext);
+        DeclarationLinker linker = new DeclarationLinker(m_bundleContext, m_queueService);
         assertNotNull(linker.addingService(m_reference));
 
 /*

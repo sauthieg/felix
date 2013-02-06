@@ -98,7 +98,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.0</version>
                 <configuration>
-                    <target>jsr14</target>
+                    <target>1.5</target>
                     <source>1.5</source>
                     <testTarget>1.5</testTarget>
                     <testSource>1.5</testSource>
@@ -159,6 +159,7 @@
                             org.apache.felix.ipojo.architecture; version="${ipojo.package.version}",
                             org.apache.felix.ipojo.extender; version="${ipojo.package.version}",
                             org.apache.felix.ipojo.extender.builder; version="${ipojo.package.version}",
+                            org.apache.felix.ipojo.extender.queue; version="${ipojo.package.version}",
                             org.apache.felix.ipojo.parser; version="${ipojo.package.version}",
                             org.apache.felix.ipojo.util; version="${ipojo.package.version}",
                             org.apache.felix.ipojo.handlers.dependency; version="${ipojo.package.version}",

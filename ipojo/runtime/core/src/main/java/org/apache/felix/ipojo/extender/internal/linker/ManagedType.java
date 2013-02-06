@@ -19,6 +19,9 @@
 
 package org.apache.felix.ipojo.extender.internal.linker;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
 import org.apache.felix.ipojo.ComponentInstance;
 import org.apache.felix.ipojo.ConfigurationException;
 import org.apache.felix.ipojo.Factory;
@@ -30,6 +33,7 @@ import org.apache.felix.ipojo.extender.ExtensionDeclaration;
 import org.apache.felix.ipojo.extender.InstanceDeclaration;
 import org.apache.felix.ipojo.extender.TypeDeclaration;
 import org.apache.felix.ipojo.extender.builder.FactoryBuilderException;
+import org.apache.felix.ipojo.extender.queue.QueueService;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
@@ -46,14 +50,16 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
  */
 public class ManagedType implements FactoryStateListener {
     private final BundleContext m_bundleContext;
+    private final QueueService m_queueService;
     private final TypeDeclaration m_declaration;
     private ServiceTracker m_extensionTracker;
     private ServiceTracker m_instanceTracker;
-    private IPojoFactory m_factory;
+    private Future<IPojoFactory> m_future;
     private boolean m_frozen;
 
-    public ManagedType(BundleContext bundleContext, TypeDeclaration declaration) {
+    public ManagedType(BundleContext bundleContext, QueueService queueService, TypeDeclaration declaration) {
         m_bundleContext = bundleContext;
+        m_queueService = queueService;
         m_declaration = declaration;
         try {
             initExtensionTracker();
@@ -130,21 +136,31 @@ public class ManagedType implements FactoryStateListener {
     private class ExtensionSupport implements ServiceTrackerCustomizer {
         public Object addingService(ServiceReference reference) {
             // TODO Check if we can cast the instance
-            ExtensionDeclaration declaration = (ExtensionDeclaration) m_bundleContext.getService(reference);
-            try {
-                // Build and start the factory instance
-                m_factory = declaration.getFactoryBuilder().build(m_bundleContext, m_declaration.getComponentMetadata());
-                m_factory.addFactoryStateListener(ManagedType.this);
-                m_factory.start();
+            final Object service = m_bundleContext.getService(reference);
+            if (service instanceof ExtensionDeclaration) {
+                m_future = m_queueService.submit(new ReferenceableCallable<IPojoFactory>(reference.getBundle()) {
 
-                // Change the status
-                m_declaration.bind();
+                    public IPojoFactory call() throws Exception {
+                        ExtensionDeclaration declaration = (ExtensionDeclaration) service;
+                        try {
+                            // Build and start the factory instance
+                            IPojoFactory factory = declaration.getFactoryBuilder().build(m_bundleContext, m_declaration.getComponentMetadata());
+                            factory.addFactoryStateListener(ManagedType.this);
+                            factory.start();
 
-                return m_factory;
-            } catch (FactoryBuilderException e) {
-                m_declaration.unbind(String.format("Cannot build '%s' factory instance", m_declaration.getExtension()), e);
-            } catch (Throwable t) {
-                m_declaration.unbind(String.format("Error during '%s' factory instance creation", m_declaration.getExtension()), t);
+                            // Change the status
+                            m_declaration.bind();
+
+                            return factory;
+                        } catch (FactoryBuilderException e) {
+                            m_declaration.unbind(String.format("Cannot build '%s' factory instance", m_declaration.getExtension()), e);
+                        } catch (Throwable t) {
+                            m_declaration.unbind(String.format("Error during '%s' factory instance creation", m_declaration.getExtension()), t);
+                        }
+
+                        return null;
+                    }
+                });
             }
 
             return null;
@@ -155,59 +171,79 @@ public class ManagedType implements FactoryStateListener {
         public void removedService(ServiceReference reference, Object o) {
 
             // Then stop the factory
-            m_factory.stop();
-            m_factory.removeFactoryStateListener(ManagedType.this);
-            m_factory = null;
-            m_declaration.unbind("Extension '%s' is missing");
+            try {
+                IPojoFactory factory = m_future.get();
+                // It is possible that the factory couldn't be created
+                if (factory != null) {
+                    factory.stop();
+                    factory.removeFactoryStateListener(ManagedType.this);
+                    m_declaration.unbind("Extension '%s' is missing");
+                }
+            } catch (InterruptedException e) {
+                m_declaration.unbind("Could not create Factory", e);
+            } catch (ExecutionException e) {
+                m_declaration.unbind("Factory creation throw an Exception", e);
+            }
+            m_future = null;
         }
     }
 
     private class InstanceSupport implements ServiceTrackerCustomizer {
-        public Object addingService(ServiceReference reference) {
+        public Object addingService(final ServiceReference reference) {
             // TODO Check if we can cast the instance
-            InstanceDeclaration instanceDeclaration = (InstanceDeclaration) m_bundleContext.getService(reference);
+            Object service = m_bundleContext.getService(reference);
+            if (service instanceof InstanceDeclaration) {
+                final InstanceDeclaration instanceDeclaration = (InstanceDeclaration) service;
 
-            // Check that instance is not already bound
-            if (instanceDeclaration.getStatus().isBound()) {
-                return null;
-            }
-
-            // Handle visibility (private/public factories)
-            if (!m_declaration.isPublic()) {
-                if (!reference.getBundle().equals(m_bundleContext.getBundle())) {
-                    Bundle origin = m_bundleContext.getBundle();
-                    instanceDeclaration.unbind(
-                            String.format("Component '%s/%s' is private. It only accept instances from bundle %s/%s [%d] (instance bundle origin: %d)",
-                                    m_declaration.getComponentName(),
-                                    m_declaration.getComponentVersion(),
-                                    origin.getSymbolicName(),
-                                    origin.getVersion(),
-                                    origin.getBundleId(),
-                                    reference.getBundle().getBundleId())
-                    );
+                // Check that instance is not already bound
+                if (instanceDeclaration.getStatus().isBound()) {
                     return null;
                 }
-            }
 
-            try {
-                // Create the component's instance
-                // It is automatically started
-                ComponentInstance instance = m_factory.createComponentInstance(instanceDeclaration.getConfiguration());
+                // Handle visibility (private/public factories)
+                if (!m_declaration.isPublic()) {
+                    if (!reference.getBundle().equals(m_bundleContext.getBundle())) {
+                        Bundle origin = m_bundleContext.getBundle();
+                        instanceDeclaration.unbind(
+                                String.format("Component '%s/%s' is private. It only accept instances from bundle %s/%s [%d] (instance bundle origin: %d)",
+                                        m_declaration.getComponentName(),
+                                        m_declaration.getComponentVersion(),
+                                        origin.getSymbolicName(),
+                                        origin.getVersion(),
+                                        origin.getBundleId(),
+                                        reference.getBundle().getBundleId())
+                        );
+                        return null;
+                    }
+                }
 
-                // Notify the declaration that everything is fine
-                instanceDeclaration.bind();
+                return m_queueService.submit(new ReferenceableCallable<ComponentInstance>(reference.getBundle()) {
+                    public ComponentInstance call() throws Exception {
+                        try {
+                            // Create the component's instance
+                            // It is automatically started
+                            // Future.get should never be null since this tracker is started when the factory has been created
+                            ComponentInstance instance = m_future.get().createComponentInstance(instanceDeclaration.getConfiguration());
 
-                return instance;
-            } catch (UnacceptableConfiguration c) {
-                m_declaration.unbind(String.format("Instance configuration is invalid (component:%s/%s, bundle:%d)",
-                        m_declaration.getComponentName(),
-                        m_declaration.getComponentVersion(),
-                        reference.getBundle().getBundleId()),
-                        c);
-            } catch (MissingHandlerException e) {
-                m_declaration.unbind(String.format("Component '%s/%s' is missing some handlers", m_declaration.getComponentName(), m_declaration.getComponentVersion()), e);
-            } catch (ConfigurationException e) {
-                m_declaration.unbind(String.format("Component '%s/%s' is incorrect", m_declaration.getComponentName(), m_declaration.getComponentVersion()), e);
+                            // Notify the declaration that everything is fine
+                            instanceDeclaration.bind();
+
+                            return instance;
+                        } catch (UnacceptableConfiguration c) {
+                            m_declaration.unbind(String.format("Instance configuration is invalid (component:%s/%s, bundle:%d)",
+                                    m_declaration.getComponentName(),
+                                    m_declaration.getComponentVersion(),
+                                    reference.getBundle().getBundleId()),
+                                    c);
+                        } catch (MissingHandlerException e) {
+                            m_declaration.unbind(String.format("Component '%s/%s' is missing some handlers", m_declaration.getComponentName(), m_declaration.getComponentVersion()), e);
+                        } catch (ConfigurationException e) {
+                            m_declaration.unbind(String.format("Component '%s/%s' is incorrect", m_declaration.getComponentName(), m_declaration.getComponentVersion()), e);
+                        }
+
+                        return null;
+                    }
+                });
             }
 
             return null;
@@ -216,16 +252,29 @@ public class ManagedType implements FactoryStateListener {
         public void modifiedService(ServiceReference reference, Object o) { }
 
         public void removedService(ServiceReference reference, Object o) {
-            ComponentInstance instance = (ComponentInstance) o;
-            instance.stop();
-            instance.dispose();
-
             InstanceDeclaration instanceDeclaration = (InstanceDeclaration) m_bundleContext.getService(reference);
+            Future<ComponentInstance> future = (Future<ComponentInstance>) o;
+            ComponentInstance instance = null;
+            try {
+                instance = future.get();
+                // It is possible that the instance couldn't be created
+                if (instance != null) {
+                    String message = String.format("Factory for Component '%s/%s' is missing",
+                            instance.getFactory().getName(),
+                            m_declaration.getComponentVersion());
+                    instanceDeclaration.unbind(message);
 
-            String message = String.format("Factory for Component '%s/%s' is missing",
-                                           m_declaration.getComponentName(),
-                                           m_declaration.getComponentVersion());
-            instanceDeclaration.unbind(message);
+                    instance.stop();
+                    instance.dispose();
+                }
+
+            } catch (InterruptedException e) {
+                instanceDeclaration.unbind("Could not create ComponentInstance", e);
+                return;
+            } catch (ExecutionException e) {
+                instanceDeclaration.unbind("ComponentInstance creation throw an Exception", e);
+                return;
+            }
         }
     }
 
