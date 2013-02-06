@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
+import org.apache.felix.ipojo.extender.internal.LifecycleQueueService;
 import org.apache.felix.ipojo.extender.queue.Callback;
 import org.apache.felix.ipojo.extender.queue.JobInfo;
 import org.apache.felix.ipojo.extender.queue.QueueService;
@@ -34,9 +35,17 @@ import org.apache.felix.ipojo.extender.queue.QueueService;
  * Time: 10:50
  * To change this template use File | Settings | File Templates.
  */
-public abstract class ForwardingQueueService implements QueueService {
+public abstract class ForwardingQueueService implements LifecycleQueueService {
 
-    protected abstract QueueService delegate();
+    protected abstract LifecycleQueueService delegate();
+
+    public void start() {
+        delegate().start();
+    }
+
+    public void stop() {
+        delegate().stop();
+    }
 
     public int getFinished() {
         return delegate().getFinished();

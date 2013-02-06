@@ -31,6 +31,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 
 import org.apache.felix.ipojo.extender.internal.AbstractService;
+import org.apache.felix.ipojo.extender.internal.LifecycleQueueService;
 import org.apache.felix.ipojo.extender.queue.Callback;
 import org.apache.felix.ipojo.extender.queue.JobInfo;
 import org.apache.felix.ipojo.extender.queue.QueueService;
@@ -43,7 +44,7 @@ import org.osgi.framework.BundleContext;
  * Time: 09:31
  * To change this template use File | Settings | File Templates.
  */
-public class ExecutorQueueService extends AbstractService implements QueueService {
+public class ExecutorQueueService extends AbstractService implements LifecycleQueueService {
 
     private final static int DEFAULT_QUEUE_SIZE = 3;
 

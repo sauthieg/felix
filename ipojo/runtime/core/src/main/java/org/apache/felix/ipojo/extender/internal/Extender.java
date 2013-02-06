@@ -28,7 +28,9 @@ import org.apache.felix.ipojo.extender.internal.queue.ExecutorQueueService;
 import org.apache.felix.ipojo.extender.internal.queue.PrefixedThreadFactory;
 import org.apache.felix.ipojo.extender.internal.queue.SynchronousQueueService;
 import org.apache.felix.ipojo.extender.internal.queue.pref.HeaderPreferenceSelection;
+import org.apache.felix.ipojo.extender.internal.queue.pref.Preference;
 import org.apache.felix.ipojo.extender.internal.queue.pref.PreferenceQueueService;
+import org.apache.felix.ipojo.extender.internal.queue.pref.enforce.EnforcedQueueService;
 import org.apache.felix.ipojo.extender.queue.QueueService;
 import org.apache.felix.ipojo.util.Logger;
 import org.osgi.framework.Bundle;
@@ -113,7 +115,7 @@ public class Extender implements BundleActivator, SynchronousBundleListener {
      */
     private DeclarationLinker m_linker;
 
-    private QueueService m_queueService;
+    private LifecycleQueueService m_queueService;
 
     public void start(BundleContext context) throws Exception {
         m_context = context;
@@ -129,13 +131,18 @@ public class Extender implements BundleActivator, SynchronousBundleListener {
             EventDispatcher.create(context);
         }
 
-        // TODO refactor this to make it more configurable
-        // TODO do not forget to stop theses services in BundleActivator.stop(BundleContext)
-        SynchronousQueueService sync = new SynchronousQueueService(context);
-        sync.start();
-        ExecutorQueueService async = new ExecutorQueueService(context, 3, new PrefixedThreadFactory("[iPOJO] "));
-        async.start();
-        m_queueService = new PreferenceQueueService(new HeaderPreferenceSelection(), sync, async);
+        if (SYNCHRONOUS_PROCESSING_ENABLED) {
+            m_queueService = new EnforcedQueueService(
+                    new HeaderPreferenceSelection(),
+                    new SynchronousQueueService(context),
+                    Preference.SYNC,
+                    m_logger);
+        } else {
+            SynchronousQueueService sync = new SynchronousQueueService(context);
+            ExecutorQueueService async = new ExecutorQueueService(context, 1, new PrefixedThreadFactory("[iPOJO] "));
+            m_queueService = new PreferenceQueueService(new HeaderPreferenceSelection(), sync, async);
+        }
+        m_queueService.start();
 
         // Start linking
         m_linker = new DeclarationLinker(context, m_queueService);
@@ -148,11 +155,6 @@ public class Extender implements BundleActivator, SynchronousBundleListener {
 
         // Begin by initializing core handlers
         m_processor.activate(m_bundle);
-
-        if (! SYNCHRONOUS_PROCESSING_ENABLED) {
-            //TODO makes processing asynchronous
-            //new Thread(m_processor).start();
-        }
 
         synchronized (this) {
             // listen to any changes in bundles.
@@ -178,6 +180,7 @@ public class Extender implements BundleActivator, SynchronousBundleListener {
         }
 
         m_linker.stop();
+        m_queueService.stop();
 
         m_logger.log(Logger.INFO, "iPOJO Main Extender stopped");
         m_context = null;

@@ -27,6 +27,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.concurrent.Callable;
 
+import org.apache.felix.ipojo.extender.internal.LifecycleQueueService;
 import org.apache.felix.ipojo.extender.internal.queue.callable.StringCallable;
 import org.apache.felix.ipojo.extender.internal.queue.pref.Preference;
 import org.apache.felix.ipojo.extender.internal.queue.pref.PreferenceSelection;
@@ -49,7 +50,7 @@ import junit.framework.TestCase;
 public class EnforcedQueueServiceTestCase extends TestCase {
 
     @Mock
-    private QueueService delegate;
+    private LifecycleQueueService delegate;
 
     @Mock
     private Bundle m_bundle;

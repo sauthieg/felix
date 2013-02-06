@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
+import org.apache.felix.ipojo.extender.internal.LifecycleQueueService;
 import org.apache.felix.ipojo.extender.queue.Callback;
 import org.apache.felix.ipojo.extender.queue.JobInfo;
 import org.apache.felix.ipojo.extender.queue.QueueService;
@@ -36,21 +37,31 @@ import org.osgi.framework.BundleReference;
  * Time: 10:16
  * To change this template use File | Settings | File Templates.
  */
-public class PreferenceQueueService implements QueueService {
+public class PreferenceQueueService implements LifecycleQueueService {
 
     private final PreferenceSelection m_strategy;
-    private final QueueService m_syncQueue;
-    private final QueueService m_asyncQueue;
+    private final LifecycleQueueService m_syncQueue;
+    private final LifecycleQueueService m_asyncQueue;
 
     private QueueService m_defaultQueue;
 
-    public PreferenceQueueService(PreferenceSelection strategy, QueueService syncQueue, QueueService asyncQueue) {
+    public PreferenceQueueService(PreferenceSelection strategy, LifecycleQueueService syncQueue, LifecycleQueueService asyncQueue) {
         m_strategy = strategy;
         m_syncQueue = syncQueue;
         m_asyncQueue = asyncQueue;
 
         // By default, system queue is asynchronous
         m_defaultQueue = asyncQueue;
+    }
+
+    public void start() {
+        m_syncQueue.start();
+        m_asyncQueue.start();
+    }
+
+    public void stop() {
+        m_syncQueue.stop();
+        m_asyncQueue.stop();
     }
 
     public int getFinished() {

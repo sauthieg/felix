@@ -30,6 +30,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.apache.felix.ipojo.extender.internal.AbstractService;
+import org.apache.felix.ipojo.extender.internal.LifecycleQueueService;
 import org.apache.felix.ipojo.extender.queue.Callback;
 import org.apache.felix.ipojo.extender.queue.JobInfo;
 import org.apache.felix.ipojo.extender.queue.QueueService;
@@ -42,7 +43,7 @@ import org.osgi.framework.BundleContext;
  * Time: 09:31
  * To change this template use File | Settings | File Templates.
  */
-public class SynchronousQueueService extends AbstractService implements QueueService {
+public class SynchronousQueueService extends AbstractService implements LifecycleQueueService {
 
     private final Statistic m_statistic = new Statistic();
 

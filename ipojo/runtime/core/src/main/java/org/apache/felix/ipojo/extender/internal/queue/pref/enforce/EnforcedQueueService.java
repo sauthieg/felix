@@ -22,6 +22,7 @@ package org.apache.felix.ipojo.extender.internal.queue.pref.enforce;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
+import org.apache.felix.ipojo.extender.internal.LifecycleQueueService;
 import org.apache.felix.ipojo.extender.internal.queue.pref.Preference;
 import org.apache.felix.ipojo.extender.internal.queue.pref.PreferenceSelection;
 import org.apache.felix.ipojo.extender.queue.Callback;
@@ -41,11 +42,11 @@ import org.osgi.framework.BundleReference;
 public class EnforcedQueueService extends ForwardingQueueService {
 
     private final PreferenceSelection m_strategy;
-    private final QueueService m_queueService;
+    private final LifecycleQueueService m_queueService;
     private final Preference m_enforced;
     private final Log m_logger;
 
-    public EnforcedQueueService(PreferenceSelection strategy, QueueService queueService, Preference enforced, Log logger) {
+    public EnforcedQueueService(PreferenceSelection strategy, LifecycleQueueService queueService, Preference enforced, Log logger) {
         m_strategy = strategy;
         m_queueService = queueService;
         m_enforced = enforced;
@@ -53,7 +54,7 @@ public class EnforcedQueueService extends ForwardingQueueService {
     }
 
     @Override
-    protected QueueService delegate() {
+    protected LifecycleQueueService delegate() {
         return m_queueService;
     }
 
