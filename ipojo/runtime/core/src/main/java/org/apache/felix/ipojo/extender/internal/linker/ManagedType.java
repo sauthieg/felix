@@ -33,6 +33,7 @@ import org.apache.felix.ipojo.extender.ExtensionDeclaration;
 import org.apache.felix.ipojo.extender.InstanceDeclaration;
 import org.apache.felix.ipojo.extender.TypeDeclaration;
 import org.apache.felix.ipojo.extender.builder.FactoryBuilderException;
+import org.apache.felix.ipojo.extender.internal.Lifecycle;
 import org.apache.felix.ipojo.extender.queue.QueueService;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -48,7 +49,7 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
  * Time: 17:45
  * To change this template use File | Settings | File Templates.
  */
-public class ManagedType implements FactoryStateListener {
+public class ManagedType implements FactoryStateListener, Lifecycle {
     private final BundleContext m_bundleContext;
     private final QueueService m_queueService;
     private final TypeDeclaration m_declaration;
@@ -270,10 +271,8 @@ public class ManagedType implements FactoryStateListener {
 
             } catch (InterruptedException e) {
                 instanceDeclaration.unbind("Could not create ComponentInstance", e);
-                return;
             } catch (ExecutionException e) {
                 instanceDeclaration.unbind("ComponentInstance creation throw an Exception", e);
-                return;
             }
         }
     }

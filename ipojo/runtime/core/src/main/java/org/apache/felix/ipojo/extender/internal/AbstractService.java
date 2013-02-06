@@ -31,7 +31,7 @@ import org.osgi.framework.ServiceRegistration;
  * Time: 11:41
  * To change this template use File | Settings | File Templates.
  */
-public abstract class AbstractService {
+public abstract class AbstractService implements Lifecycle {
 
     private final BundleContext m_bundleContext;
     private final Class<?> m_type;

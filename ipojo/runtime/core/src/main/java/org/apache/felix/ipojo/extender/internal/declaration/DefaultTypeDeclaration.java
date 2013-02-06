@@ -45,19 +45,39 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
  */
 public class DefaultTypeDeclaration extends AbstractDeclaration implements TypeDeclaration {
 
-    private final BundleContext m_bundleContext;
     private final Element m_componentMetadata;
-    private ServiceRegistration<?> m_registration;
+    private final String m_componentName;
+    private final String m_componentVersion;
+    private final String m_extension;
     private boolean visible = true;
 
     public DefaultTypeDeclaration(BundleContext bundleContext, Element componentMetadata) {
-        m_bundleContext = bundleContext;
+        super(bundleContext, TypeDeclaration.class);
         m_componentMetadata = componentMetadata;
-        String publicAttribute = componentMetadata.getAttribute("public");
-        visible = (publicAttribute == null) || !publicAttribute.equalsIgnoreCase("false");
+        visible = initVisible();
+        m_componentName = initComponentName();
+        m_componentVersion = initComponentVersion(bundleContext);
+        m_extension = initExtension();
     }
 
-    public String getComponentName() {
+    private String initExtension() {
+        if (m_componentMetadata.getNameSpace() == null) {
+            return m_componentMetadata.getName();
+        }
+        return m_componentMetadata.getNameSpace() + ":" + m_componentMetadata.getName();
+    }
+
+    private String initComponentVersion(BundleContext bundleContext) {
+        String version = m_componentMetadata.getAttribute("version");
+        if (version != null) {
+            if ("bundle".equalsIgnoreCase(version)) {
+                return bundleContext.getBundle().getHeaders().get(Constants.BUNDLE_VERSION);
+            }
+        }
+        return version;
+    }
+
+    private String initComponentName() {
         String name = m_componentMetadata.getAttribute("name");
         if (name == null) {
             name = m_componentMetadata.getAttribute("classname");
@@ -65,21 +85,21 @@ public class DefaultTypeDeclaration extends AbstractDeclaration implements TypeD
         return name;
     }
 
+    private boolean initVisible() {
+        String publicAttribute = m_componentMetadata.getAttribute("public");
+        return (publicAttribute == null) || !publicAttribute.equalsIgnoreCase("false");
+    }
+
+    public String getComponentName() {
+        return m_componentName;
+    }
+
     public String getComponentVersion() {
-        String version = m_componentMetadata.getAttribute("version");
-        if (version != null) {
-            if ("bundle".equalsIgnoreCase(version)) {
-                return m_bundleContext.getBundle().getHeaders().get(Constants.BUNDLE_VERSION);
-            }
-        }
-        return version;
+        return m_componentVersion;
     }
 
     public String getExtension() {
-        if (m_componentMetadata.getNameSpace() == null) {
-            return m_componentMetadata.getName();
-        }
-        return m_componentMetadata.getNameSpace() + ":" + m_componentMetadata.getName();
+        return m_extension;
     }
 
     public Element getComponentMetadata() {
@@ -88,16 +108,5 @@ public class DefaultTypeDeclaration extends AbstractDeclaration implements TypeD
 
     public boolean isPublic() {
         return visible;
-    }
-
-    public void start() {
-        m_registration = m_bundleContext.registerService(TypeDeclaration.class.getName(), this, null);
-    }
-
-    public void stop() {
-        if (m_registration != null) {
-            m_registration.unregister();
-            m_registration = null;
-        }
     }
 }

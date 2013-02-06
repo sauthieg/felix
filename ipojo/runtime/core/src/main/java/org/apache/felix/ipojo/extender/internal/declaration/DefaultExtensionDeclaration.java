@@ -32,13 +32,11 @@ import org.osgi.framework.ServiceRegistration;
  */
 public class DefaultExtensionDeclaration extends AbstractDeclaration implements ExtensionDeclaration {
 
-    private final BundleContext m_bundleContext;
     private final FactoryBuilder m_factoryBuilder;
     private final String m_type;
-    private ServiceRegistration<?> m_registration;
 
     public DefaultExtensionDeclaration(BundleContext bundleContext, FactoryBuilder factoryBuilder, String type) {
-        m_bundleContext = bundleContext;
+        super(bundleContext, ExtensionDeclaration.class);
         m_factoryBuilder = factoryBuilder;
         m_type = type;
     }
@@ -51,22 +49,17 @@ public class DefaultExtensionDeclaration extends AbstractDeclaration implements 
         return m_type;
     }
 
+    @Override
     public void start() {
-        m_registration = m_bundleContext.registerService(ExtensionDeclaration.class.getName(), this, getServiceProperties());
+        super.start();
         bind();
     }
 
-    private Dictionary<String, ?> getServiceProperties() {
+    @Override
+    protected Dictionary<String, ?> getServiceProperties() {
         Hashtable<String, Object> properties = new Hashtable<String, Object>();
         properties.put(ExtensionDeclaration.EXTENSION_NAME_PROPERTY, m_type);
         return properties;
-    }
-
-    public void stop() {
-        if (m_registration != null) {
-            m_registration.unregister();
-            m_registration = null;
-        }
     }
 
 }

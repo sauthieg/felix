@@ -21,15 +21,21 @@ package org.apache.felix.ipojo.extender.internal.declaration;
 
 import org.apache.felix.ipojo.extender.Declaration;
 import org.apache.felix.ipojo.extender.Status;
+import org.apache.felix.ipojo.extender.internal.AbstractService;
+import org.osgi.framework.BundleContext;
 
 /**
  * Common code to all Declaration object.
  */
-public abstract class AbstractDeclaration implements Declaration, Status {
+public abstract class AbstractDeclaration extends AbstractService implements Declaration, Status {
 
     private boolean m_bound = false;
     private String m_message;
     private Throwable m_throwable;
+
+    protected AbstractDeclaration(BundleContext bundleContext, Class<?> type) {
+        super(bundleContext, type);
+    }
 
     public boolean isBound() {
         return m_bound;

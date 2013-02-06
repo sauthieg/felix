@@ -19,22 +19,18 @@
 
 package org.apache.felix.ipojo.extender.internal;
 
-import org.osgi.framework.Bundle;
-
 /**
- * Main Processor interface.
- * A bundle processor is a fragment of extender, it analyze the bundle content and creates the entities.
+ * Simple start/stop interface.
  */
-public interface BundleProcessor extends Lifecycle {
-    /**
-     * A bundle is started.
-     * @param bundle the bundle
-     */
-    void activate(Bundle bundle);
+public interface Lifecycle {
 
     /**
-     * A bundle is stopping. This call is made during the stopping phase.
-     * @param bundle the bundle
+     * Start the service.
      */
-    void deactivate(Bundle bundle);
+    void start();
+
+    /**
+     * Stop the service.
+     */
+    void stop();
 }

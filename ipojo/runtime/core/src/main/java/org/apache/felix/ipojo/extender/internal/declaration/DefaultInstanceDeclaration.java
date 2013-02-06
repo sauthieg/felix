@@ -33,20 +33,35 @@ public class DefaultInstanceDeclaration extends AbstractDeclaration implements I
 
     private static final Dictionary<String, Object> EMPTY_DICTIONARY = new Hashtable<String, Object>();
 
-    private final BundleContext m_bundleContext;
     private final String m_componentName;
     private final Dictionary<String, Object> m_configuration;
-
-    private ServiceRegistration<?> m_registration;
+    private final String m_componentVersion;
+    private final String m_instanceName;
 
     public DefaultInstanceDeclaration(BundleContext bundleContext, String componentName) {
         this(bundleContext, componentName, EMPTY_DICTIONARY);
     }
 
     public DefaultInstanceDeclaration(BundleContext bundleContext, String componentName, Dictionary<String, Object> configuration) {
-        m_bundleContext = bundleContext;
+        super(bundleContext, InstanceDeclaration.class);
         m_componentName = componentName;
         m_configuration = configuration;
+        m_componentVersion = initComponentVersion();
+        m_instanceName = initInstanceName();
+    }
+
+    private String initInstanceName() {
+        // TODO Extract instance.name as constant
+        String name = (String) m_configuration.get("instance.name");
+        if (name == null) {
+            name = UNNAMED_INSTANCE;
+        }
+        return name;
+    }
+
+    private String initComponentVersion() {
+        // TODO Extract factory.version as constant
+        return (String) m_configuration.get("factory.version");
     }
 
     public Dictionary<String, Object> getConfiguration() {
@@ -58,22 +73,15 @@ public class DefaultInstanceDeclaration extends AbstractDeclaration implements I
     }
 
     public String getComponentVersion() {
-        return (String) m_configuration.get("factory.version"); // TODO Extract factory.version as constant
+        return m_componentVersion;
     }
 
     public String getInstanceName() {
-        String name = (String) m_configuration.get("instance.name");   // TODO Extract instance.name as constant
-        if (name == null) {
-            return UNNAMED_INSTANCE;
-        }
-        return name;
+        return m_instanceName;
     }
 
-    public void start() {
-        m_registration = m_bundleContext.registerService(InstanceDeclaration.class.getName(), this, getServiceProperties());
-    }
-
-    private Dictionary<String, ?> getServiceProperties() {
+    @Override
+    protected Dictionary<String, ?> getServiceProperties() {
         Hashtable<String, Object> properties = new Hashtable<String, Object>();
         properties.put(InstanceDeclaration.COMPONENT_NAME_PROPERTY, m_componentName);
 
@@ -82,20 +90,9 @@ public class DefaultInstanceDeclaration extends AbstractDeclaration implements I
             properties.put(InstanceDeclaration.COMPONENT_VERSION_PROPERTY, version);
         }
 
-        String name = getInstanceName();
-        if (name == null) {
-            name = UNNAMED_INSTANCE;
-        }
-        properties.put(InstanceDeclaration.INSTANCE_NAME, name);
+        properties.put(InstanceDeclaration.INSTANCE_NAME, m_instanceName);
 
         return properties;
-    }
-
-    public void stop() {
-        if (m_registration != null) {
-            m_registration.unregister();
-            m_registration = null;
-        }
     }
 
 }

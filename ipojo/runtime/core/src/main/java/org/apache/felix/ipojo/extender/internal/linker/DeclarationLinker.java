@@ -20,6 +20,7 @@
 package org.apache.felix.ipojo.extender.internal.linker;
 
 import org.apache.felix.ipojo.extender.TypeDeclaration;
+import org.apache.felix.ipojo.extender.internal.Lifecycle;
 import org.apache.felix.ipojo.extender.queue.QueueService;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -33,7 +34,7 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
  * Time: 17:33
  * To change this template use File | Settings | File Templates.
  */
-public class DeclarationLinker implements ServiceTrackerCustomizer {
+public class DeclarationLinker implements ServiceTrackerCustomizer, Lifecycle {
     private final BundleContext m_bundleContext;
     private final QueueService m_queueService;
     private final ServiceTracker m_typeTracker;
