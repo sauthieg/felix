@@ -20,6 +20,7 @@
 package org.apache.felix.ipojo.extender.internal.processor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.felix.ipojo.extender.internal.BundleProcessor;
@@ -47,7 +48,9 @@ public class ChainedBundleProcessor implements BundleProcessor {
     }
 
     public void deactivate(Bundle bundle) {
-        for (BundleProcessor processor : m_processors) {
+        List<BundleProcessor> reverse = new ArrayList<BundleProcessor>(m_processors);
+        Collections.reverse(reverse);
+        for (BundleProcessor processor : reverse) {
             processor.deactivate(bundle);
         }
     }
@@ -59,8 +62,9 @@ public class ChainedBundleProcessor implements BundleProcessor {
     }
 
     public void stop() {
-        // TODO Maybe stop should be in reverse order ?
-        for (BundleProcessor processor : m_processors) {
+        List<BundleProcessor> reverse = new ArrayList<BundleProcessor>(m_processors);
+        Collections.reverse(reverse);
+        for (BundleProcessor processor : reverse) {
             processor.stop();
         }
     }
