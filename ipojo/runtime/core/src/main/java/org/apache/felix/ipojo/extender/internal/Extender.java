@@ -21,6 +21,7 @@ package org.apache.felix.ipojo.extender.internal;
 
 import org.apache.felix.ipojo.EventDispatcher;
 import org.apache.felix.ipojo.extender.internal.linker.DeclarationLinker;
+import org.apache.felix.ipojo.extender.internal.processor.QueuingActivationProcessor;
 import org.apache.felix.ipojo.extender.internal.processor.ChainedBundleProcessor;
 import org.apache.felix.ipojo.extender.internal.processor.ComponentsBundleProcessor;
 import org.apache.felix.ipojo.extender.internal.processor.ExtensionBundleProcessor;
@@ -31,7 +32,6 @@ import org.apache.felix.ipojo.extender.internal.queue.pref.HeaderPreferenceSelec
 import org.apache.felix.ipojo.extender.internal.queue.pref.Preference;
 import org.apache.felix.ipojo.extender.internal.queue.pref.PreferenceQueueService;
 import org.apache.felix.ipojo.extender.internal.queue.pref.enforce.EnforcedQueueService;
-import org.apache.felix.ipojo.extender.queue.QueueService;
 import org.apache.felix.ipojo.util.Logger;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
@@ -131,6 +131,8 @@ public class Extender implements BundleActivator, SynchronousBundleListener {
             EventDispatcher.create(context);
         }
 
+        BundleProcessor extensionBundleProcessor = new ExtensionBundleProcessor(m_logger);
+        BundleProcessor componentsProcessor = new ComponentsBundleProcessor(m_logger);
         if (SYNCHRONOUS_PROCESSING_ENABLED) {
             m_queueService = new EnforcedQueueService(
                     new HeaderPreferenceSelection(),
@@ -141,6 +143,9 @@ public class Extender implements BundleActivator, SynchronousBundleListener {
             SynchronousQueueService sync = new SynchronousQueueService(context);
             ExecutorQueueService async = new ExecutorQueueService(context, 1, new PrefixedThreadFactory("[iPOJO] "));
             m_queueService = new PreferenceQueueService(new HeaderPreferenceSelection(), sync, async);
+
+            extensionBundleProcessor = new QueuingActivationProcessor(extensionBundleProcessor, m_queueService);
+            componentsProcessor = new QueuingActivationProcessor(componentsProcessor, m_queueService);
         }
         m_queueService.start();
 
@@ -148,8 +153,8 @@ public class Extender implements BundleActivator, SynchronousBundleListener {
         m_linker = new DeclarationLinker(context, m_queueService);
         m_linker.start();
 
-        m_processor.getProcessors().add(new ExtensionBundleProcessor(m_logger));
-        m_processor.getProcessors().add(new ComponentsBundleProcessor(m_logger));
+        m_processor.getProcessors().add(extensionBundleProcessor);
+        m_processor.getProcessors().add(componentsProcessor);
 
         m_processor.start();
 

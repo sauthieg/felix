@@ -17,29 +17,41 @@
  * under the License.
  */
 
-package org.apache.felix.ipojo.extender.internal.linker;
+package org.apache.felix.ipojo.extender.internal.processor;
 
-import java.util.concurrent.Callable;
-
+import org.apache.felix.ipojo.extender.internal.BundleProcessor;
+import org.apache.felix.ipojo.extender.internal.ReferenceableCallable;
+import org.apache.felix.ipojo.extender.queue.QueueService;
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleReference;
 
 /**
  * Created with IntelliJ IDEA.
  * User: guillaume
  * Date: 06/02/13
- * Time: 15:02
+ * Time: 21:58
  * To change this template use File | Settings | File Templates.
  */
-public abstract class ReferenceableCallable<T> implements Callable<T>, BundleReference {
-    private final Bundle m_bundle;
+public class QueuingActivationProcessor extends ForwardingBundleProcessor {
+    private final BundleProcessor m_delegate;
+    private final QueueService m_queueService;
 
-    protected ReferenceableCallable(Bundle bundle) {
-        m_bundle = bundle;
+    public QueuingActivationProcessor(BundleProcessor delegate, QueueService queueService) {
+        m_delegate = delegate;
+        m_queueService = queueService;
     }
 
-    public Bundle getBundle() {
-        return m_bundle;
+    @Override
+    protected BundleProcessor delegate() {
+        return m_delegate;
+    }
+
+    public void activate(final Bundle bundle) {
+        m_queueService.submit(new ReferenceableCallable<Boolean>(bundle) {
+            public Boolean call() throws Exception {
+                QueuingActivationProcessor.super.activate(bundle);
+                return true;
+            }
+        });
     }
 
 }

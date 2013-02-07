@@ -34,6 +34,7 @@ import org.apache.felix.ipojo.extender.InstanceDeclaration;
 import org.apache.felix.ipojo.extender.TypeDeclaration;
 import org.apache.felix.ipojo.extender.builder.FactoryBuilderException;
 import org.apache.felix.ipojo.extender.internal.Lifecycle;
+import org.apache.felix.ipojo.extender.internal.ReferenceableCallable;
 import org.apache.felix.ipojo.extender.queue.QueueService;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;

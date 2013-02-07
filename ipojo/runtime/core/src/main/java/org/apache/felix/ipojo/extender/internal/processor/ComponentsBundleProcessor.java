@@ -86,13 +86,7 @@ public class ComponentsBundleProcessor implements BundleProcessor {
     }
 
     public void stop() {
-        // Construct a new instance to avoid ConcurrentModificationException since deactivate also change the list
-        // Sort the list greater first, so last installed bundles are deactivated first
-        List<Bundle> bundles = new ArrayList<Bundle>(m_registry.keySet());
-        Collections.sort(bundles, Collections.reverseOrder());
-        for (Bundle bundle : bundles) {
-            deactivate(bundle);
-        }
+        // Ignored, for a simple ordered shutdown, use ReverseBundleProcessor
     }
 
     /**
