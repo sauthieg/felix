@@ -24,8 +24,6 @@ import java.util.concurrent.ThreadFactory;
 import org.apache.felix.ipojo.ConfigurationTracker;
 import org.apache.felix.ipojo.EventDispatcher;
 import org.apache.felix.ipojo.extender.internal.declaration.service.DeclarationServiceFactory;
-import org.apache.felix.ipojo.extender.internal.declaration.service.DefaultDeclarationBuilder;
-import org.apache.felix.ipojo.extender.internal.declaration.service.DefaultDeclarationBuilderService;
 import org.apache.felix.ipojo.extender.internal.linker.DeclarationLinker;
 import org.apache.felix.ipojo.extender.internal.processor.*;
 import org.apache.felix.ipojo.extender.internal.queue.ExecutorQueueService;

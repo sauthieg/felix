@@ -22,7 +22,7 @@ package org.apache.felix.ipojo.extender.internal.declaration.service;
 import java.util.Dictionary;
 
 import org.apache.felix.ipojo.Factory;
-import org.apache.felix.ipojo.extender.DeclarationBuilder;
+import org.apache.felix.ipojo.extender.InstanceBuilder;
 import org.apache.felix.ipojo.extender.DeclarationHandle;
 import org.apache.felix.ipojo.extender.InstanceDeclaration;
 import org.apache.felix.ipojo.extender.internal.declaration.DefaultInstanceDeclaration;
@@ -37,7 +37,7 @@ import junit.framework.TestCase;
  * Date: 13/02/2014
  * Time: 10:32
  */
-public class DefaultDeclarationBuilderTestCase extends TestCase {
+public class DefaultInstanceBuilderTestCase extends TestCase {
 
     @Mock
     private BundleContext m_bundleContext;
@@ -48,7 +48,7 @@ public class DefaultDeclarationBuilderTestCase extends TestCase {
     }
 
     public void testNoConfiguration() throws Exception {
-        DeclarationBuilder builder = new DefaultDeclarationBuilder(m_bundleContext, "type");
+        InstanceBuilder builder = new DefaultInstanceBuilder(m_bundleContext, "type");
         DeclarationHandle handle = builder.build();
         InstanceDeclaration did = (InstanceDeclaration) handle;
 
@@ -61,7 +61,7 @@ public class DefaultDeclarationBuilderTestCase extends TestCase {
     }
 
     public void testNameConfiguration() throws Exception {
-        DeclarationBuilder builder = new DefaultDeclarationBuilder(m_bundleContext, "type").name("John");
+        InstanceBuilder builder = new DefaultInstanceBuilder(m_bundleContext, "type").name("John");
 
         DeclarationHandle handle = builder.build();
         InstanceDeclaration did = (InstanceDeclaration) handle;
@@ -75,7 +75,7 @@ public class DefaultDeclarationBuilderTestCase extends TestCase {
     }
 
     public void testVersionConfiguration() throws Exception {
-        DeclarationBuilder builder = new DefaultDeclarationBuilder(m_bundleContext, "type").name("John").version("1.0");
+        InstanceBuilder builder = new DefaultInstanceBuilder(m_bundleContext, "type").name("John").version("1.0");
 
         DeclarationHandle handle = builder.build();
         InstanceDeclaration did = (InstanceDeclaration) handle;
@@ -90,13 +90,13 @@ public class DefaultDeclarationBuilderTestCase extends TestCase {
     }
 
     public void testBuilderReUseProvidesDifferentInstances() throws Exception {
-        DeclarationBuilder builder = new DefaultDeclarationBuilder(m_bundleContext, "type");
+        InstanceBuilder builder = new DefaultInstanceBuilder(m_bundleContext, "type");
         assertNotSame(builder.build(), builder.build());
     }
 
 
     public void testDeclarationIsNotAutomaticallyStarted() throws Exception {
-        DeclarationBuilder builder = new DefaultDeclarationBuilder(m_bundleContext, "type");
+        InstanceBuilder builder = new DefaultInstanceBuilder(m_bundleContext, "type");
         DeclarationHandle handle = builder.build();
         DefaultInstanceDeclaration did = (DefaultInstanceDeclaration) handle;
 
@@ -104,7 +104,7 @@ public class DefaultDeclarationBuilderTestCase extends TestCase {
     }
 
     public void testDeepConfiguration() throws Exception {
-        DeclarationBuilder builder = new DefaultDeclarationBuilder(m_bundleContext, "type");
+        InstanceBuilder builder = new DefaultInstanceBuilder(m_bundleContext, "type");
         assertNotNull(builder.configure());
     }
 }

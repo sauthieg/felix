@@ -31,10 +31,10 @@ import org.apache.felix.ipojo.extender.DeclarationHandle;
  */
 public class DefaultConfigurationBuilder implements ConfigurationBuilder {
 
-    private final DefaultDeclarationBuilder builder;
+    private final DefaultInstanceBuilder builder;
     private Map<String, Object> configuration = new Hashtable<String, Object>();
 
-    public DefaultConfigurationBuilder(final DefaultDeclarationBuilder builder) {
+    public DefaultConfigurationBuilder(final DefaultInstanceBuilder builder) {
         this.builder = builder;
     }
 

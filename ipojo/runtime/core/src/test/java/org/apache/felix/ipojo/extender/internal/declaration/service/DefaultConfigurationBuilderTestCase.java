@@ -35,12 +35,12 @@ public class DefaultConfigurationBuilderTestCase extends TestCase {
 
     @Mock
     private BundleContext m_bundleContext;
-    private DefaultDeclarationBuilder parent;
+    private DefaultInstanceBuilder parent;
 
     @Override
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        parent = new DefaultDeclarationBuilder(m_bundleContext, "type");
+        parent = new DefaultInstanceBuilder(m_bundleContext, "type");
     }
 
     public void testPropertyAddition() throws Exception {

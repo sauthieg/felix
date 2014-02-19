@@ -20,10 +20,31 @@
 package org.apache.felix.ipojo.extender;
 
 /**
+ * Handle on the associated {@link org.apache.felix.ipojo.extender.Declaration} service.
+ * It can be used to start and/or stop the underlying declaration as well as retrieving its
+ * {@linkplain org.apache.felix.ipojo.extender.Status status} (bound or not).
  *
  * @since 1.12
  */
 public interface DeclarationHandle {
+
+    /**
+     * Publish the {@link org.apache.felix.ipojo.extender.Declaration}. If the declaration
+     * is already registered, it's a no-op operation.
+     */
     void publish();
+
+    /**
+     * Retract the {@link org.apache.felix.ipojo.extender.Declaration} service. If the
+     * declaration is not registered, it's a no-op operation.
+     */
     void retract();
+
+    /**
+     * Return the current (instant) status of the declaration. Remember that
+     * {@link org.apache.felix.ipojo.extender.Status} is immutable (status does not change over time).
+     * If you want an updated status, call again the {@link #getStatus()} method.
+     * @return the instant status of the {@link org.apache.felix.ipojo.extender.Declaration}
+     */
+    Status getStatus();
 }

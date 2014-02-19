@@ -26,9 +26,8 @@ import java.util.Hashtable;
 
 import org.apache.felix.ipojo.Factory;
 import org.apache.felix.ipojo.extender.ConfigurationBuilder;
-import org.apache.felix.ipojo.extender.DeclarationBuilder;
+import org.apache.felix.ipojo.extender.InstanceBuilder;
 import org.apache.felix.ipojo.extender.DeclarationHandle;
-import org.apache.felix.ipojo.extender.InstanceDeclaration;
 import org.apache.felix.ipojo.extender.internal.declaration.DefaultInstanceDeclaration;
 import org.osgi.framework.BundleContext;
 
@@ -37,24 +36,24 @@ import org.osgi.framework.BundleContext;
  * Date: 13/02/2014
  * Time: 09:36
  */
-public class DefaultDeclarationBuilder implements DeclarationBuilder {
+public class DefaultInstanceBuilder implements InstanceBuilder {
 
-    private final BundleContext context;
+    private BundleContext context;
     private String name;
     private String type;
     private String version;
 
-    public DefaultDeclarationBuilder(final BundleContext context, final String type) {
-        this.context = context;
+    public DefaultInstanceBuilder(final BundleContext context, final String type) {
+        this.context(context);
         this.type(type);
     }
 
-    public DeclarationBuilder name(final String name) {
+    public InstanceBuilder name(final String name) {
         this.name = name;
         return this;
     }
 
-    public DeclarationBuilder type(final String type) {
+    public InstanceBuilder type(final String type) {
         if (type == null) {
             throw new IllegalArgumentException(format("'type' parameter cannot be null (instance must be of a given type)"));
         }
@@ -62,15 +61,23 @@ public class DefaultDeclarationBuilder implements DeclarationBuilder {
         return this;
     }
 
-    public DeclarationBuilder type(final Class<?> type) {
+    public InstanceBuilder type(final Class<?> type) {
         if (type == null) {
             throw new IllegalArgumentException(format("'type' parameter cannot be null (instance must be of a given type)"));
         }
         return type(type.getName());
     }
 
-    public DeclarationBuilder version(final String version) {
+    public InstanceBuilder version(final String version) {
         this.version = version;
+        return this;
+    }
+
+    public InstanceBuilder context(final BundleContext context) {
+        if (context == null) {
+            throw new IllegalArgumentException(format("'context' parameter cannot be null"));
+        }
+        this.context = context;
         return this;
     }
 

@@ -19,21 +19,15 @@
 
 package org.apache.felix.ipojo.extender.internal.declaration.service;
 
-import java.util.Hashtable;
-
-import org.apache.felix.ipojo.Factory;
-import org.apache.felix.ipojo.extender.DeclarationBuilder;
+import org.apache.felix.ipojo.extender.InstanceBuilder;
 import org.apache.felix.ipojo.extender.DeclarationBuilderService;
 import org.apache.felix.ipojo.extender.DeclarationHandle;
-import org.apache.felix.ipojo.extender.InstanceDeclaration;
-import org.apache.felix.ipojo.extender.internal.declaration.DefaultInstanceDeclaration;
+import org.apache.felix.ipojo.extender.builder.FactoryBuilder;
+import org.apache.felix.ipojo.extender.internal.declaration.DefaultExtensionDeclaration;
+import org.apache.felix.ipojo.extender.internal.declaration.DefaultTypeDeclaration;
+import org.apache.felix.ipojo.metadata.Element;
 import org.osgi.framework.BundleContext;
 
-/**
- * User: guillaume
- * Date: 08/02/2014
- * Time: 21:49
- */
 public class DefaultDeclarationBuilderService implements DeclarationBuilderService {
 
     private final BundleContext context;
@@ -42,21 +36,25 @@ public class DefaultDeclarationBuilderService implements DeclarationBuilderServi
         this.context = context;
     }
 
-    public DeclarationBuilder newInstance(final String type) {
+    public InstanceBuilder newInstance(final String type) {
         return newInstance(type, null);
     }
 
-    public DeclarationBuilder newInstance(final String type, final String name) {
+    public InstanceBuilder newInstance(final String type, final String name) {
         return newInstance(type, name, null);
     }
 
-    public DeclarationBuilder newInstance(final String type, final String name, final String version) {
-        return new DefaultDeclarationBuilder(context, type)
+    public InstanceBuilder newInstance(final String type, final String name, final String version) {
+        return new DefaultInstanceBuilder(context, type)
                 .version(version)
                 .name(name);
     }
 
-    public void close() {
+    public DeclarationHandle newExtension(final String name, final FactoryBuilder builder) {
+        return new DefaultExtensionDeclaration(context, builder, name);
+    }
 
+    public DeclarationHandle newType(final Element description) {
+        return new DefaultTypeDeclaration(context, description);
     }
 }

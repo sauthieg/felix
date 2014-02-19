@@ -57,7 +57,8 @@ public class DeclarationServiceFactory implements ServiceFactory<DeclarationBuil
     }
 
     public void ungetService(final Bundle bundle, final ServiceRegistration<DeclarationBuilderService> registration, final DeclarationBuilderService service) {
-        ((DefaultDeclarationBuilderService) service).close();
+        // Nothing to do, built declarations will be kept
+        // It's the client responsibility to dispose its declarations
     }
 
 

@@ -20,12 +20,42 @@
 package org.apache.felix.ipojo.extender;
 
 /**
+ * Support class for fluent instance declaration building.
+ * This class can be used to provide values for instance configuration.
+ * Any object can be used as configuration values (List and Maps are accepted for example).
  *
  * @since 1.12
  */
 public interface ConfigurationBuilder {
+
+    /**
+     * Provide a property value.
+     * @param name property name
+     * @param value property value
+     * @return this builder
+     */
     ConfigurationBuilder property(String name, Object value);
+
+    /**
+     * Remove a property from the configuration.
+     * This does not affect already created declarations (from this builder).
+     * @param name property name
+     * @return this builder
+     */
     ConfigurationBuilder remove(String name);
+
+    /**
+     * Remove all properties from the configuration.
+     * This does not affect already created declarations (from this builder).
+     * @return this builder
+     */
     ConfigurationBuilder clear();
+
+    /**
+     * Build the declaration handle (contains the instance configuration).
+     * Notice that the declaration is not yet published (no automatic activation).
+     * The client has to do it through {@link DeclarationHandle#publish()}
+     * @return the handle to the configured declaration
+     */
     DeclarationHandle build();
 }
